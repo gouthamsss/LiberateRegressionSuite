@@ -1,0 +1,5 @@
+dropdown xpath format :: (//*[text()[contains(.,'Application Form:')]]/./following::select)[1]
+
+
+
+xpath to get label of a field ::	(//input[contains(@class,'iceInpTxt MandatoryTextBox')])[1]/./preceding::label[1]
