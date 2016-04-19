@@ -39,5 +39,15 @@
 	<classpathentry kind="lib" path="Reference/xercesImpl-2.9.1.jar"/>
 	<classpathentry kind="lib" path="Reference/xml-apis-1.3.04.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="Reference/commons-codec-1.9.jar"/>
+	<classpathentry kind="lib" path="Reference/commons-logging-1.1.3.jar"/>
+	<classpathentry kind="lib" path="Reference/junit-4.12.jar"/>
+	<classpathentry kind="lib" path="Reference/poi-3.12-20150511.jar"/>
+	<classpathentry kind="lib" path="Reference/poi-examples-3.12-20150511.jar"/>
+	<classpathentry kind="lib" path="Reference/poi-excelant-3.12-20150511.jar"/>
+	<classpathentry kind="lib" path="Reference/poi-ooxml-3.12-20150511.jar"/>
+	<classpathentry kind="lib" path="Reference/poi-ooxml-schemas-3.12-20150511.jar"/>
+	<classpathentry kind="lib" path="Reference/poi-scratchpad-3.12-20150511.jar"/>
+	<classpathentry kind="lib" path="Reference/xmlbeans-2.6.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
