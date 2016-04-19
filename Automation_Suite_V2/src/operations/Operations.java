@@ -50,6 +50,5 @@ public class Operations
 		
 		return driver;
 	}
-
-	//TakeScreenshot
+	
 }
