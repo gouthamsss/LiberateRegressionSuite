@@ -16,10 +16,13 @@ import com.sun.media.sound.InvalidFormatException;
 
 public class TestReport
 {
-	String TestReportClassVersion = "0.0.3 : Set screenshot count to 0 once doc is created 'Failsafe'";
+	String TestReportClassVersion = "0.1.0 : Added multiple report creation with diffrent document name";
 
 	String scenarioName;
 	String reportLocation;
+	
+	String documentName;
+	
 	int screenshotCount = 0;
 	
 	public TestReport(String scenarioName, String reportLocation)
@@ -47,11 +50,21 @@ public class TestReport
 
 		System.out.println(" - Took Screenshot : " + filename);
 	}
-
+	
+	public void createScreenshotDocument(String Document_Name)
+	{
+		documentName = Document_Name;
+		createDocument();
+	}
 	public void createScreenshotDocument()
 	{
+		documentName = scenarioName;
+		createDocument();
+	}
+	
+	public void createDocument()
+	{
 		XWPFDocument doc = new XWPFDocument();
-		String documentName = scenarioName;
 		String wordDoc = reportLocation + documentName;
 		int scrnCount = screenshotCount;
 		
@@ -60,7 +73,7 @@ public class TestReport
 	    
 	    for (int i = 0; i < scrnCount; i++)
 	    {
-			String imgFile = reportLocation + documentName + "_" + (i) + ".png";
+			String imgFile = reportLocation + scenarioName + "_" + (i) + ".png";
 					
 			File file = new File(imgFile);
 		    
