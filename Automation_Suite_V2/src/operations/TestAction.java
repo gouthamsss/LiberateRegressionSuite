@@ -277,7 +277,7 @@ public class TestAction
 
 	//_____SUPPORT FUNCTION SECTION_____//
 	//Wait for a particular amount of time (milliseconds)
-	private void waitFor(long time)
+	public void waitFor(long time)
 	{
 		try 
 		{
