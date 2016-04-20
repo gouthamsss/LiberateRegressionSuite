@@ -16,7 +16,7 @@ import com.sun.media.sound.InvalidFormatException;
 
 public class TestReport
 {
-	String TestReportClassVersion = "0.0.2";
+	String TestReportClassVersion = "0.0.3 : Set screenshot count to 0 once doc is created 'Failsafe'";
 
 	String scenarioName;
 	String reportLocation;
@@ -118,5 +118,7 @@ public class TestReport
 		
 	    System.out.println("Created Document " + documentName + ".docx");
 		//TODO add create screenshot document code
+	    
+	    screenshotCount = 0;
 	}
 }
