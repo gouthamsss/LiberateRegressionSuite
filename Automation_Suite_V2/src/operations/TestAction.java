@@ -20,7 +20,7 @@ import com.gargoylesoftware.htmlunit.ElementNotFoundException;
 
 public class TestAction 
 {
-	String actionClassVersion = "0.1.7 - Added : Method to get value from select";
+	String actionClassVersion = "0.1.8 - Fixed : Infinite loop in wait until method";
 	
 	//Variable Declaration
 	WebDriver driver;				//Declare WebDriver
@@ -213,7 +213,7 @@ public class TestAction
 	{
 		xpath = xpathLocator;
 
-		for(int i=0;i<retry;)
+		for(int i=0;i<retry;i++)
 		{
 			try
 			{
