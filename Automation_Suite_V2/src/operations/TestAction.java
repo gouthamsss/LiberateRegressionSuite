@@ -2,6 +2,7 @@ package operations;
 
 import java.awt.AWTException;
 import java.awt.Robot;
+import java.util.Set;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotVisibleException;
@@ -20,7 +21,7 @@ import com.gargoylesoftware.htmlunit.ElementNotFoundException;
 
 public class TestAction 
 {
-	String actionClassVersion = "0.1.8 - Fixed : Infinite loop in wait until method";
+	String actionClassVersion = "0.2.0 - Added : Switch window - Pending Testing";
 	
 	//Variable Declaration
 	WebDriver driver;				//Declare WebDriver
@@ -28,6 +29,7 @@ public class TestAction
 	int retry = 5;
 	int i = 0;
 	String xpath = "";
+	String mainWindowHandle;
 	
 	public WebDriverWait longWait;
 	public WebDriverWait shortWait;
@@ -274,6 +276,45 @@ public class TestAction
 		}
 	}
 	
+	//Method to navigate to newly opened tab
+	public void gotoNewTab()
+	{
+		Set<String> handles = driver.getWindowHandles();
+		 
+		mainWindowHandle = driver.getWindowHandle();
+		handles.remove(mainWindowHandle);
+		 
+		Object winHandle=handles.iterator().next();
+		 
+		if (winHandle!=mainWindowHandle)
+		{
+			//To retrieve the handle of second window, extracting the handle which does not match to first window handle
+			String secondWinHandle = (String) winHandle; //Storing handle of second window handle
+			//Switch control to new window
+			driver.switchTo().window(secondWinHandle);
+		}
+		for (String handle : driver.getWindowHandles()) 
+		{
+			driver.switchTo().window(handle);
+		}
+	}
+	
+	public void gotoMainTab()
+	{
+		driver.close();
+		
+		if(mainWindowHandle!=null)
+		{
+			driver.switchTo().window(mainWindowHandle);
+		}
+		else
+		{
+			if(mainWindowHandle.equals(driver.getWindowHandle()))
+			{
+				System.out.println("Already on mainwindow");
+			}
+		}
+	}
 
 	//_____SUPPORT FUNCTION SECTION_____//
 	//Wait for a particular amount of time (milliseconds)
