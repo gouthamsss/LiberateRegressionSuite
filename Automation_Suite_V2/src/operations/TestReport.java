@@ -16,14 +16,14 @@ import com.sun.media.sound.InvalidFormatException;
 
 public class TestReport
 {
-	String TestReportClassVersion = "0.1.0 : Added multiple report creation with diffrent document name";
+	String TestReportClassVersion = "0.1.1 : Amended : screenshotCount to static";
 
 	String scenarioName;
 	String reportLocation;
 	
 	String documentName;
 	
-	int screenshotCount = 0;
+	static int screenshotCount = 0;
 	
 	public TestReport(String scenarioName, String reportLocation)
 	{
