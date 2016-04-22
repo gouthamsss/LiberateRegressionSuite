@@ -22,7 +22,7 @@ import com.gargoylesoftware.htmlunit.ElementNotFoundException;
 
 public class TestAction 
 {
-	String actionClassVersion = "0.3.0 - Added : Flexibility for wait methods to wait for any provided seconds";
+	String actionClassVersion = "0.3.1 - Amended : Changed waitfor method to public";
 	
 	//Variable Declaration
 	WebDriver driver;				//Declare WebDriver
@@ -271,7 +271,7 @@ public class TestAction
 
 	//_____SUPPORT FUNCTION SECTION_____//
 	//Wait for a particular amount of time (milliseconds)
-	private void waitFor(long time)
+	public void waitFor(long time)
 	{
 		try 
 		{
