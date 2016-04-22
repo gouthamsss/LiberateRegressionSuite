@@ -2,7 +2,8 @@ package operations;
 
 import java.awt.AWTException;
 import java.awt.Robot;
-import java.util.Set;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotVisibleException;
@@ -21,7 +22,7 @@ import com.gargoylesoftware.htmlunit.ElementNotFoundException;
 
 public class TestAction 
 {
-	String actionClassVersion = "0.2.0 - Added : Switch window - Pending Testing";
+	String actionClassVersion = "0.3.0 - Added : Flexibility for wait methods to wait for any provided seconds";
 	
 	//Variable Declaration
 	WebDriver driver;				//Declare WebDriver
@@ -29,20 +30,15 @@ public class TestAction
 	int retry = 5;
 	int i = 0;
 	String xpath = "";
-	String mainWindowHandle;
 	
-	public WebDriverWait longWait;
-	public WebDriverWait shortWait;
-	public WebDriverWait tinyWait;
+	public WebDriverWait waitPeriod;
+	
+	SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy h:mm:ss a");
 	
 	//Parameterized constructor. Receives declared driver instance.
 	public TestAction(WebDriver driver)
 	{
 		this.driver = driver;
-		
-		longWait = new WebDriverWait(driver, 120);;
-		shortWait  = new WebDriverWait(driver,5);
-		tinyWait  = new WebDriverWait(driver,2);
 	}
 	
 	//_____USER ACTION SECTION_____//
@@ -55,13 +51,15 @@ public class TestAction
 			waitFor(200);
 			try
 			{
-				System.out.println("\tClicking on :" + xpathLocator);
+				log("Action - Clicking on :" + xpathLocator);
 				driver.findElement(By.xpath(xpathLocator)).click();
 				break;
 			}
 			catch(Exception e)
 			{
 				handleExcpetion(e);
+				if (i == (retry-1))
+					passed = false;
 			}
 		}
 		
@@ -77,7 +75,7 @@ public class TestAction
 		{
 			try
 			{
-				System.out.println("\tSending data '" + value + "' to field : " + xpathLocator);
+				log("Action - Sending data '" + value + "' to field : " + xpathLocator);
 				clearInputField(xpathLocator);
 				driver.findElement(By.xpath(xpathLocator)).sendKeys(value);
 				break;
@@ -85,10 +83,10 @@ public class TestAction
 			catch(Exception e)
 			{
 				handleExcpetion(e);
+				if (i == (retry-1))
+					passed = false;
 			}
 		}
-		if (i == 4)
-			passed = false;
 		
 		return passed;	
 	}
@@ -100,7 +98,7 @@ public class TestAction
 
 		String dataFromPage = "";
 		
-		System.out.println("\tGetting value from : " + xpathLocator);
+		log("Action - Getting value from : " + xpathLocator);
 		dataFromPage = driver.findElement(By.xpath(xpathLocator)).getText();
 		
 		return dataFromPage;
@@ -121,12 +119,12 @@ public class TestAction
 			catch(Exception e)
 			{
 				handleExcpetion(e);
+				if (i == (retry-1))
+					passed = false;
 			}
 		}
-		if (i == 4)
-			passed = false;
 		
-		return passed;	
+		return passed;		
 	}
 	
 	//Select a value from combo box
@@ -138,7 +136,7 @@ public class TestAction
 		{
 			try
 			{
-				System.out.println("\tSelecting value '" + value +"' from : " + xpathLocator);
+				log("Action - Selecting value '" + value +"' from : " + xpathLocator);
 				Select appForm = new Select(driver.findElement(By.xpath(xpathLocator)));
 				appForm.selectByValue(value);
 				break;
@@ -146,14 +144,12 @@ public class TestAction
 			catch(Exception e)
 			{
 				handleExcpetion(e);
+				if (i == (retry-1))
+					passed = false;
 			}
-			
 		}
 		
-		if (i == 4)
-			passed = false;
-		
-		return passed;
+		return passed;	
 	}
 	
 	//Select a value by index from combo box
@@ -165,7 +161,7 @@ public class TestAction
 		{
 			try
 			{
-				System.out.println("\tSelecting index'" + index +"' from : " + xpathLocator);
+				log("Action - Selecting index'" + index +"' from : " + xpathLocator);
 				Select appForm = new Select(driver.findElement(By.xpath(xpathLocator)));
 				appForm.selectByIndex(index);
 				break;
@@ -173,64 +169,60 @@ public class TestAction
 			catch(Exception e)
 			{
 				handleExcpetion(e);
+				if (i == (retry-1))
+					passed = false;
 			}
 		}
-		if (i == 4)
-			passed = false;
 		
-		return passed;
+		return passed;	
 	}
 	
 	//Get selected value from the combo box
-		public String getValueFromSelect(String xpathLocator)
-		{
-			xpath = xpathLocator;
-			String selectedValue = "";
-			
-			for(int i=0;i<retry;i++)
-			{
-				try
-				{
-					System.out.println("\tGetting value from : " + xpathLocator);
-					Select appForm = new Select(driver.findElement(By.xpath(xpathLocator)));
-					
-					WebElement option = appForm.getFirstSelectedOption();
-					selectedValue = option.getText();
-
-					break;
-				}
-				catch(Exception e)
-				{
-					handleExcpetion(e);
-				}
-			}
-			if (i == 4)
-				passed = false;
-			
-			return selectedValue;
-		}
-	
-	//Wait until an element exist for long amount of time
-	public boolean waitUntil(String xpathLocator, WebDriverWait waitperiod)
+	public String getValueFromSelect(String xpathLocator)
 	{
 		xpath = xpathLocator;
-
+		String selectedValue = "";
+		
 		for(int i=0;i<retry;i++)
 		{
 			try
 			{
-				System.out.println("\tWaiting for : " + xpathLocator);
-				waitperiod.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpathLocator)));
-				passed = true;
+				log("Action - Getting value from : " + xpathLocator);
+				Select appForm = new Select(driver.findElement(By.xpath(xpathLocator)));
+				
+				WebElement option = appForm.getFirstSelectedOption();
+				selectedValue = option.getText();
+
 				break;
 			}
 			catch(Exception e)
 			{
 				handleExcpetion(e);
+				if (i == (retry-1))
+					passed = false;
 			}
 		}
-		if (i == 4)
+		
+		return selectedValue;
+	}
+	
+	//Wait until an element exist for long amount of time
+	public boolean waitUntil(String xpathLocator, int timetowait)
+	{
+		xpath = xpathLocator;
+		waitPeriod = new WebDriverWait(driver, timetowait);
+
+		try
+		{
+			log("Action - Waiting for : " + xpathLocator);
+			waitPeriod.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpathLocator)));
+			passed = true;
+		}
+		catch(TimeoutException e)
+		{
+			log("ERROR - TimeoutException Occured while looking for : '"+xpath+"'.");
 			passed = false;
+		}
 		return passed;	
 	}
 	
@@ -246,7 +238,7 @@ public class TestAction
 			if (driver.findElements(By.xpath(xpathforOK)).size() != 0)
 			{
 				clickOn(xpathforOK);
-				waitUntilElementnotExist(xpathforOK, 500);
+				waitUntilElementnotExist(xpathforOK, 5);
 			}
 		} 
 		catch (Exception e) 
@@ -266,7 +258,7 @@ public class TestAction
 			if (driver.findElements(By.xpath(xpathforYesNo)).size() != 0)
 			{
 				clickOn(xpathforYesNo);
-				waitUntilElementnotExist(xpathforYesNo, 500);
+				waitUntilElementnotExist(xpathforYesNo, 5);
 			}
 			waitFor(500);
 		} 
@@ -276,49 +268,10 @@ public class TestAction
 		}
 	}
 	
-	//Method to navigate to newly opened tab
-	public void gotoNewTab()
-	{
-		Set<String> handles = driver.getWindowHandles();
-		 
-		mainWindowHandle = driver.getWindowHandle();
-		handles.remove(mainWindowHandle);
-		 
-		Object winHandle=handles.iterator().next();
-		 
-		if (winHandle!=mainWindowHandle)
-		{
-			//To retrieve the handle of second window, extracting the handle which does not match to first window handle
-			String secondWinHandle = (String) winHandle; //Storing handle of second window handle
-			//Switch control to new window
-			driver.switchTo().window(secondWinHandle);
-		}
-		for (String handle : driver.getWindowHandles()) 
-		{
-			driver.switchTo().window(handle);
-		}
-	}
-	
-	public void gotoMainTab()
-	{
-		driver.close();
-		
-		if(mainWindowHandle!=null)
-		{
-			driver.switchTo().window(mainWindowHandle);
-		}
-		else
-		{
-			if(mainWindowHandle.equals(driver.getWindowHandle()))
-			{
-				System.out.println("Already on mainwindow");
-			}
-		}
-	}
 
 	//_____SUPPORT FUNCTION SECTION_____//
 	//Wait for a particular amount of time (milliseconds)
-	public void waitFor(long time)
+	private void waitFor(long time)
 	{
 		try 
 		{
@@ -331,21 +284,26 @@ public class TestAction
 	}
 		
 	//Wait until a particular Element disappears.	
-	public boolean waitUntilElementnotExist(String xpathLocator, int time)
+	public boolean waitUntilElementnotExist(String xpathLocator, int timetowait)
 	{
 		xpath = xpathLocator;
-
-		for(int i=0;i<retry;i++)
+		waitPeriod = new WebDriverWait(driver, timetowait);
+		
+		if(elementExist(xpathLocator))
 		{
-			if(elementExist(xpathLocator))
+			try
 			{
-				waitFor(time);
+				waitPeriod.until(ExpectedConditions.invisibilityOfElementLocated((By.xpath(xpathLocator))));
 			}
-			else
+			catch(TimeoutException e)
 			{
-				passed = true;
-				break;
+				log("ERROR - TimeoutException Occured while looking for : '"+xpath+"'.");
+				passed = false;
 			}
+		}	
+		else
+		{
+			passed = true;
 		}
 		return passed;
 	}
@@ -383,19 +341,19 @@ public class TestAction
 	{
 		if(e instanceof StaleElementReferenceException)
 		{
-			System.out.println("\tStaleElementReferenceException Occured - While looking for : '"+xpath+"' .");
+			log("ERROR - StaleElementReferenceException Occured - While looking for : '"+xpath+"' .");
 		}
 		if(e instanceof ElementNotVisibleException)
 		{
-			System.out.println("\tElementNotVisibleException Occured - While looking for : '"+xpath+"' .");				
+			log("ERROR - ElementNotVisibleException Occured - While looking for : '"+xpath+"' .");				
 		}
 		if(e instanceof ElementNotFoundException)
 		{
-			System.out.println("\tElementNotFoundException Occured - While looking for : '"+xpath+"' . ");
+			log("ERROR - ElementNotFoundException Occured - While looking for : '"+xpath+"' . ");
 		}
 		if(e instanceof NoSuchElementException)
 		{
-			System.out.println("\nNoSuchElementException Occured- While looking for : '"+xpath+"' .");
+			log("ERROR - NoSuchElementException Occured- While looking for : '"+xpath+"' .");
 			passed = false;
 		}
 		if(e instanceof WebDriverException)
@@ -403,13 +361,19 @@ public class TestAction
 			e.printStackTrace();
 			closeOKpopup();
 			clickYesOnYesNoPopup();
-			System.out.println("\tWebDriverException Occured- While looking for : '"+xpath+"' .");
+			log("ERROR - WebDriverException Occured- While looking for : '"+xpath+"' .");
 		}
 		if(e instanceof TimeoutException)
 		{
-			System.out.println("\tTimeoutException Occured while looking for : '"+xpath+"'.");
+			log("ERROR - TimeoutException Occured while looking for : '"+xpath+"'.");
 			passed = false;
 		}
 		
+	}
+
+	public void log(String message)
+	{
+		String msg = "\n" + sdf.format(new Date()) + " : " + message;
+		System.out.print(msg);
 	}
 }
