@@ -87,7 +87,7 @@ public class TestMainClass
 		tsa.scrollUp();
 		
 		xpath = "//a[contains(@href,'maintainEmployeeParams.xhtml')]";
-		passed = tsa.waitUntil(xpath, tsa.longWait);
+		passed = tsa.waitUntil(xpath, 20);
 		passed = tsa.clickOn(xpath);
 		
 		return passed;
@@ -97,7 +97,7 @@ public class TestMainClass
 	{
 		xpath = "//*[text()[contains(.,'Withdrawn Items')]]";
 		
-		passed = tsa.waitUntil(xpath, tsa.longWait);
+		passed = tsa.waitUntil(xpath, 20);
 		passed = tsa.clickOn(xpath);
 		
 		return passed;
@@ -106,7 +106,7 @@ public class TestMainClass
 	public static boolean testStep_3()
 	{
 		xpath = "//*[text()[contains(.,'Suspense by Exchange')]]";
-		passed = tsa.waitUntil(xpath, tsa.longWait);
+		passed = tsa.waitUntil(xpath, 20);
 		passed = tsa.clickOn(xpath);
 		
 		return passed;
@@ -115,7 +115,7 @@ public class TestMainClass
 	public static boolean testStep_4()
 	{
 		xpath = "//select[contains(@id,'exchangeID')]";
-		passed = tsa.waitUntil(xpath, tsa.longWait);
+		passed = tsa.waitUntil(xpath, 20);
 		tsa.selectBy(xpath, 3);
 		
 		xpath = "//select[contains(@id,'suspenseReason')]";
@@ -130,7 +130,7 @@ public class TestMainClass
 	public static boolean testStep_5()
 	{
 		xpath = "//*[text()[contains(.,'uccessfully')]]";
-		passed = tsa.waitUntil(xpath, tsa.longWait);
+		passed = tsa.waitUntil(xpath, 20);
 
 		xpath = "(//*[@class = 'blackNormal'])[2]";
 		serverDate = tsa.getDatafromPage(xpath);
@@ -138,7 +138,7 @@ public class TestMainClass
 		serverDate = serverDate.replaceAll("/", "-");
 		serverDate = serverDate.replaceAll(",", "");
 			
-		passed = tsa.waitUntil(xpath, tsa.longWait);
+		passed = tsa.waitUntil(xpath, 20);
 		
 		return passed;
 	}
@@ -162,7 +162,7 @@ public class TestMainClass
 	public static boolean testStep_8()
 	{
 		xpath = "//input[contains(@id,'reportno')]";
-		passed = tsa.waitUntil(xpath, tsa.longWait);
+		passed = tsa.waitUntil(xpath, 20);
 		passed = tsa.sendDatatoField(xpath, "CIR394G02");
 		
 		xpath = "//input[@value = 'Search']";
@@ -175,7 +175,7 @@ public class TestMainClass
 	{
 		
 		xpath = "//tr[@id='browseReports:reportsTable_row_0']";
-		passed = tsa.waitUntil(xpath, tsa.longWait);
+		passed = tsa.waitUntil(xpath, 20);
 		passed = tsa.clickOn(xpath);
 		
 		return passed;
@@ -184,7 +184,7 @@ public class TestMainClass
 	public static boolean testStep_10()
 	{
 		xpath = "//*[text()[contains(.,'Available Reports')]]";
-		passed = tsa.waitUntil(xpath, tsa.longWait);
+		passed = tsa.waitUntil(xpath, 20);
 		
 		xpath = "//*[text()[contains(.,'" + serverDate + "')]]";
 		
