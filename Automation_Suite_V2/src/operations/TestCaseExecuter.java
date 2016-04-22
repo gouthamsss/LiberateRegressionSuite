@@ -111,11 +111,11 @@ public class TestCaseExecuter
 			liberateNavigation[i] = "//*[text()[contains(.,'" + tempNav[i].trim() +"')]]";
 		}
 		
-		tsa.waitUntil(liberateNavigation[0], tsa.longWait);
+		tsa.waitUntil(liberateNavigation[0], 20);
 		tsa.clickOn(liberateNavigation[0]);
-		tsa.waitUntil(liberateNavigation[1], tsa.longWait);
+		tsa.waitUntil(liberateNavigation[1], 20);
 		tsa.clickOn(liberateNavigation[1]);
-		tsa.waitUntil(liberateNavigation[2], tsa.longWait);
+		tsa.waitUntil(liberateNavigation[2], 20);
 		tsa.clickOn(liberateNavigation[2]);
 	}
 	
@@ -180,7 +180,7 @@ public class TestCaseExecuter
 		provideField = testStep;
 		
 		provideField = "(//*[text()[contains(.,'" + provideField + ":')]]/./following::input)[1]";
-		tsa.waitUntil(provideField, tsa.longWait);
+		tsa.waitUntil(provideField, 20);
 		tsa.sendDatatoField(provideField, provideData);	
 	}
 
@@ -212,7 +212,7 @@ public class TestCaseExecuter
 		button = button.trim();
 		
 		button = "//input[@value='" + button + "']";
-		tsa.waitUntil(provideField, tsa.longWait);
+		tsa.waitUntil(provideField, 20);
 		tsa.clickOn(button);
 	}
 
@@ -248,7 +248,7 @@ public class TestCaseExecuter
 		selectField = testStep;
 		
 		selectField = "(//*[text()[contains(.,'" + selectField + ":')]]/./following::select)[1]";
-		tsa.waitUntil(selectField, tsa.longWait);
+		tsa.waitUntil(selectField, 20);
 		tsa.selectBy(selectField, selectData);	
 	}
 }
