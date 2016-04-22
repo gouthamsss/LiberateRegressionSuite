@@ -22,7 +22,7 @@ import com.gargoylesoftware.htmlunit.ElementNotFoundException;
 
 public class TestAction 
 {
-	String actionClassVersion = "0.3.1 - Amended : Changed waitfor method to public";
+	String actionClassVersion = "0.3.2 - Updated : Clickon method message";
 	
 	//Variable Declaration
 	WebDriver driver;				//Declare WebDriver
@@ -51,7 +51,7 @@ public class TestAction
 			waitFor(200);
 			try
 			{
-				log("Action - Clicking on :" + xpathLocator);
+				log("Action - Clicking on : " + xpathLocator);
 				driver.findElement(By.xpath(xpathLocator)).click();
 				break;
 			}
