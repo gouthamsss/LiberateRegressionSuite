@@ -38,7 +38,7 @@ public class LoginLogout
 			driver.findElement(By.id("login:login_button")).click();
 
 			xpath = "//*[text()[contains(.,'Logout')]]";
-			passed = tsa.waitUntil(xpath,20);
+			passed = tsa.waitUntil(xpath,30);
 			if(passed)
 			{
 				System.out.println("Logged in");
