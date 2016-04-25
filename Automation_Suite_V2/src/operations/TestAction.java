@@ -4,6 +4,7 @@ import java.awt.AWTException;
 import java.awt.Robot;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotVisibleException;
@@ -15,14 +16,16 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.gargoylesoftware.htmlunit.ElementNotFoundException;
+import com.google.common.base.Predicate;
 
 public class TestAction 
 {
-	String actionClassVersion = "0.3.2 - Updated : Clickon method message";
+	String actionClassVersion = "1.0.0 - Added : Wait until select loads values";
 	
 	//Variable Declaration
 	WebDriver driver;				//Declare WebDriver
@@ -137,8 +140,8 @@ public class TestAction
 			try
 			{
 				log("Action - Selecting value '" + value +"' from : " + xpathLocator);
-				Select appForm = new Select(driver.findElement(By.xpath(xpathLocator)));
-				appForm.selectByValue(value);
+				Select select = new Select(driver.findElement(By.xpath(xpathLocator)));
+				select.selectByValue(value);
 				break;
 			}
 			catch(Exception e)
@@ -162,8 +165,8 @@ public class TestAction
 			try
 			{
 				log("Action - Selecting index'" + index +"' from : " + xpathLocator);
-				Select appForm = new Select(driver.findElement(By.xpath(xpathLocator)));
-				appForm.selectByIndex(index);
+				Select select = new Select(driver.findElement(By.xpath(xpathLocator)));
+				select.selectByIndex(index);
 				break;
 			}
 			catch(Exception e)
@@ -188,9 +191,9 @@ public class TestAction
 			try
 			{
 				log("Action - Getting value from : " + xpathLocator);
-				Select appForm = new Select(driver.findElement(By.xpath(xpathLocator)));
+				Select select = new Select(driver.findElement(By.xpath(xpathLocator)));
 				
-				WebElement option = appForm.getFirstSelectedOption();
+				WebElement option = select.getFirstSelectedOption();
 				selectedValue = option.getText();
 
 				break;
@@ -293,6 +296,7 @@ public class TestAction
 		{
 			try
 			{
+				log("Action - Waiting for : " + xpathLocator + " - To disappear");
 				waitPeriod.until(ExpectedConditions.invisibilityOfElementLocated((By.xpath(xpathLocator))));
 			}
 			catch(TimeoutException e)
@@ -307,7 +311,59 @@ public class TestAction
 		}
 		return passed;
 	}
+	
+	//Wait until provided combo box loads all values.	
+	public boolean waitUntilSelectOptionsPopulated(String xpathLocator)
+	{
+		xpath = xpathLocator;
+		Select locSelect = null;
 		
+		for(int i=0;i<retry;i++)
+		{
+			try
+			{
+				locSelect = new Select(driver.findElement(By.xpath(xpath)));
+				break;
+			}
+			catch(Exception e)
+			{
+				handleExcpetion(e);
+			}
+		}
+		
+		final Select select = locSelect;
+		
+		log("Action - Waiting for : " + xpathLocator + " - To load values");
+		
+		passed = false;
+		
+        new FluentWait<WebDriver>(driver)
+                .withTimeout(5, TimeUnit.SECONDS)
+                .pollingEvery(500, TimeUnit.MILLISECONDS)
+                .ignoring(StaleElementReferenceException.class)
+                .until(new Predicate<WebDriver>()
+                {
+                    public boolean apply(WebDriver d)
+                    {
+                		for(int i=0;i<retry;i++)
+                		{
+                			try
+                			{
+                				passed = (!select.getOptions().isEmpty());
+                				if(passed)
+                					break;
+                			}
+                			catch(Exception e)
+                			{
+                				handleExcpetion(e);
+                			}
+                		}
+                    	return passed;
+                    }
+                });
+		return passed;
+    }
+	
 	//Check if an element Exists. True : Exists, False : Doesn't Exists
 	public boolean elementExist(String xpathLocator)
 	{
@@ -342,6 +398,7 @@ public class TestAction
 		if(e instanceof StaleElementReferenceException)
 		{
 			log("ERROR - StaleElementReferenceException Occured - While looking for : '"+xpath+"' .");
+			waitFor(500);
 		}
 		if(e instanceof ElementNotVisibleException)
 		{
@@ -370,7 +427,8 @@ public class TestAction
 		}
 		
 	}
-
+	
+	//Method to redirect console messages
 	public void log(String message)
 	{
 		String msg = "\n" + sdf.format(new Date()) + " : " + message;
