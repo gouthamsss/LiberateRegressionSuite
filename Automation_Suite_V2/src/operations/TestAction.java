@@ -25,7 +25,7 @@ import com.google.common.base.Predicate;
 
 public class TestAction 
 {
-	String actionClassVersion = "1.0.1 - Amended : Depricated waitUntilSelectOptionsPopulated. Pending Fix";
+	String actionClassVersion = "1.0.2 - Added : custom wait waitUntilSelectOptionLoaded";
 	
 	//Variable Declaration
 	WebDriver driver;				//Declare WebDriver
@@ -358,6 +358,45 @@ public class TestAction
                 });
 		return passed;
     }
+	public boolean waitUntilSelectOptionLoads(String xpathLocator, int timetowait)
+	{
+		boolean selectLoaded = false;
+		xpath = xpathLocator;
+		int limit = timetowait * 1000;
+		
+		Select select = new Select(driver.findElement(By.xpath(xpath)));
+		
+		log("Action - Waiting for : " + xpath + " to load values");
+		
+		for (int i = 0; i < limit; i = i + 500)
+		{
+			waitFor(500);
+			
+			try
+			{
+				selectLoaded = !select.getOptions().isEmpty();
+			}
+			catch(Exception e)
+			{
+				handleExcpetion(e);
+			}
+			
+			if(selectLoaded)
+			{
+				passed = true;
+				break;
+			}
+			else
+			{
+				if(i == limit)
+				{
+					log("ERROR - TimeoutException Occured while waiting for : '"+xpath+"' - to load values");
+					passed = false;
+				}
+			}
+		}
+		return passed;
+	}
 	
 	//Check if an element Exists. True : Exists, False : Doesn't Exists
 	public boolean elementExist(String xpathLocator)
