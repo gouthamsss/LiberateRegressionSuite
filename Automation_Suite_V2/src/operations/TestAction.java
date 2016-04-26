@@ -25,7 +25,7 @@ import com.google.common.base.Predicate;
 
 public class TestAction 
 {
-	String actionClassVersion = "1.0.0 - Added : Wait until select loads values";
+	String actionClassVersion = "1.0.1 - Amended : Depricated waitUntilSelectOptionsPopulated. Pending Fix";
 	
 	//Variable Declaration
 	WebDriver driver;				//Declare WebDriver
@@ -312,24 +312,19 @@ public class TestAction
 		return passed;
 	}
 	
-	//Wait until provided combo box loads all values.	
+	//Wait until provided combo box loads all values.
+	@Deprecated
 	public boolean waitUntilSelectOptionsPopulated(String xpathLocator)
 	{
+		waitFor(500);
+		
+		WebDriverWait wait = new  WebDriverWait(driver, 30);
+		wait.until(ExpectedConditions.stalenessOf(driver.findElement(By.xpath(xpathLocator))));
+		
 		xpath = xpathLocator;
 		Select locSelect = null;
 		
-		for(int i=0;i<retry;i++)
-		{
-			try
-			{
-				locSelect = new Select(driver.findElement(By.xpath(xpath)));
-				break;
-			}
-			catch(Exception e)
-			{
-				handleExcpetion(e);
-			}
-		}
+		locSelect = new Select(driver.findElement(By.xpath(xpath)));
 		
 		final Select select = locSelect;
 		
@@ -426,6 +421,13 @@ public class TestAction
 			passed = false;
 		}
 		
+	}
+	
+	//Quits and close driver
+	public void closeSession()
+	{
+		driver.close();
+		driver.quit();
 	}
 	
 	//Method to redirect console messages
