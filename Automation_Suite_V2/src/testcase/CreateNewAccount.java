@@ -7,7 +7,7 @@ import operations.TestData;
 public class CreateNewAccount
 {
 	String AccountNumber;
-	static String AccountFirstName = TestData.customerName();
+	static String AccountFirstName	= TestData.customerName();
 	static String AccountLastName	= TestData.customerName();
 	//String CustomerID;
 	static String ApplicationForm	= "fixedResidential";
@@ -15,6 +15,12 @@ public class CreateNewAccount
 	static String ServiceType		= "PEL";
 	static String ServicePackage	= "ETFTESTING";
 	static String CustomeIDType		= "NI";
+	static String Company			= "CYN";
+	static String MarketingCategory = "990000";
+	static String Region			= "CAY";
+	static String AccountType		= "TP";
+	static String BillStatusArea	= "BOT";
+	
 	static boolean SelectServicePackage = true;
 	static boolean CustomerIDProvided   = false;
 	
@@ -45,9 +51,15 @@ public class CreateNewAccount
 			{
 				break;
 			}
+			if(!testStep_4())
+			{
+				break;
+			}
 			
 			break;
 		}
+		
+		//ta.closeSession();
 	}
 	
 	private static boolean testStep_1()
@@ -84,7 +96,9 @@ public class CreateNewAccount
 			passed = ta.selectBy(xpath, ServiceType);
 
 			xpath = "(//*[text()[contains(.,'Service Package:')]]/./following::select)[1]";
-			passed = ta.waitUntilSelectOptionsPopulated(xpath);
+			ta.waitFor(1000);
+			//TODO Below function not yet fixed 
+			passed = ta.waitUntilSelectOptionLoads(xpath, 5);
 			passed = ta.selectBy(xpath, ServicePackage);
 		}
 		
@@ -92,30 +106,173 @@ public class CreateNewAccount
 		passed = ta.waitUntil(xpath, 2);
 		passed = ta.clickOn(xpath);
 		
-		xpath_1 = "(//*[text()[contains(.,'First Name:')]]/./following::select)[1]";
+		xpath_1 = "(//*[text()[contains(.,'First Name:')]]/./following::input)[1]";
 		xpath_2 = "(//*[text()[contains(.,'ID:')]]/./following::select)[1]";
 		
 		xpath = xpath_1 + " | " + xpath_2;
 		passed = ta.waitUntil(xpath, 10);
 		
-		if(!ta.elementExist(xpath_2))
+		if(!ta.elementExist(xpath_1))
 		{
-			xpath = xpath_2;
-			passed = ta.selectBy(xpath, CustomeIDType);
-			
-			xpath = "(//input[contains(@class,'MandatoryTextBox')])[1]";
-			passed = ta.waitUntil(xpath, 2);
-			passed = ta.sendDatatoField(xpath, AccountFirstName);
+			passed = ProvideCustomerID();
 			
 			xpath = "(//input[@value='Proceed >>'])[last()]";
 			passed = ta.clickOn(xpath);
-			
-			CustomerIDProvided = true;
 			
 			xpath = "//input[@value='Create new account']";
 			passed = ta.waitUntil(xpath, 2);
 			passed = ta.clickOn(xpath);
 		}
+		
+		return passed;
+	}
+
+	private static boolean testStep_4()
+	{
+		passed = FillApplicationFixedResidential();
+		
+		return passed;
+	}
+	
+	private static boolean FillApplicationFixedResidential()
+	{
+		//CUSTOMER INFORMATION
+		xpath = "(//*[text()[contains(.,'Salutation:')]]/./following::select)[1]";
+		passed = ta.waitUntil(xpath, 5);
+		passed = ta.selectBy(xpath, 1);
+		
+		xpath = "(//*[text()[contains(.,'Surname:')]]/./following::input)[1]";
+		passed = ta.waitUntil(xpath, 5);
+		passed = ta.sendDatatoField(xpath, AccountLastName);
+		
+		xpath = "(//*[text()[contains(.,'First Name:')]]/./following::input)[1]";
+		passed = ta.waitUntil(xpath, 5);
+		passed = ta.sendDatatoField(xpath, AccountFirstName);
+		
+		xpath = "(//*[text()[contains(.,'Date Of Birth:')]]/./following::input)[1]";
+		passed = ta.sendDatatoField(xpath, "02/02/1991");
+		
+		xpath = "(//*[text()[contains(.,'Nationality')]]/./following::select)[1]";
+		passed = ta.selectBy(xpath, 1);
+		
+		//BILLING ADDRESS
+		xpath = "(//*[text()[contains(.,'Address Type:')]]/./following::select)[1]";
+		passed = ta.selectBy(xpath, "A");
+		
+		xpath = "(//*[text()[contains(.,'Address Type:')]]/./following::input[contains(@class,'MandatoryTextBox')])[1]";
+		passed = ta.waitUntil(xpath, 2);
+		passed = ta.sendDatatoField(xpath, AccountFirstName);
+		
+		//CUSTOMER CLASSIFICATION
+		xpath  = "(//*[text()[contains(.,'Company:')]]/./following::select)[1]";
+		passed = ta.selectBy(xpath, Company);
+		
+		xpath = "(//*[text()[contains(.,'Customer Type:')]]/./following::select)[1]";
+		if(ta.getValueFromSelect(xpath).equals("-- Select --"))
+		{
+			passed = ta.selectBy(xpath, CustomerType);
+		}
+		
+		xpath = "(//*[text()[contains(.,'Marketing Category:')]]/./following::select)[1]";
+		if(ta.getValueFromSelect(xpath).equals("-- Select --"))
+		{
+			passed = ta.selectBy(xpath, MarketingCategory);
+		}
+		
+		xpath = "(//*[text()[contains(.,'Region:')]]/./following::select)[1]";
+		if(ta.getValueFromSelect(xpath).equals("-- Select --"))
+		{
+			passed = ta.selectBy(xpath, Region);
+		}
+		
+		xpath = "(//*[text()='Account Type:']/./following::select)[1]";
+		if(ta.getValueFromSelect(xpath).equals("-- Select --"))
+		{
+			passed = ta.selectBy(xpath, AccountType);
+		}
+		
+		xpath = "(//*[text()='Bill Stats Area:']/./following::select)[1]";
+		if(ta.getValueFromSelect(xpath).equals("-- Select --"))
+		{
+			xpath = "(//*[text()='Bill Stats Area:']/./following::input)[2]";
+			passed = ta.clickOn(xpath);
+			
+			xpath = "(//*[text()='Bill Stats Area:']/./following::select)[1]";
+			passed = ta.waitUntilSelectOptionLoads(xpath, 5);
+			passed = ta.selectBy(xpath, BillStatusArea);
+		}
+		
+		//BILLING DETAILS
+		xpath = "(//*[text()[contains(.,'Bill Frequency')]]/./following::select)[1]";
+		if(ta.getValueFromSelect(xpath).equals("-- Select --"))
+		{
+			passed = ta.selectBy(xpath, 1);
+		}
+		
+		xpath = "(//*[text()[contains(.,'Rental Period')]]/./following::select)[1]";
+		if(ta.getValueFromSelect(xpath).equals("-- Select --"))
+		{
+			passed = ta.selectBy(xpath, 1);
+		}
+		
+		xpath = "(//*[text()[contains(.,'Primary Day Of Billing')]]/./following::select)[1]";
+		if(ta.getValueFromSelect(xpath).equals("-- Select --"))
+		{
+			passed = ta.selectBy(xpath, 1);
+		}
+		
+		xpath = "(//*[text()[contains(.,'Bill Media:')]]/./following::select)[1]";
+		if(ta.getValueFromSelect(xpath).equals("-- Select --"))
+		{
+			passed = ta.selectBy(xpath, "P");
+		}
+		
+		xpath = "(//*[text()[contains(.,'Bill Language:')]]/./following::select)[1]";
+		if(ta.getValueFromSelect(xpath).equals("-- Select --"))
+		{
+			passed = ta.selectBy(xpath, "E");
+		}
+		
+		xpath = "(//*[text()[contains(.,'Bill Report:')]]/./following::select)[1]";
+		if(ta.getValueFromSelect(xpath).equals("-- Select --"))
+		{
+			passed = ta.selectBy(xpath, 1);
+		}
+		
+		xpath = "(//*[text()[contains(.,'Interim Bill Report:')]]/./following::select)[1]";
+		if(ta.getValueFromSelect(xpath).equals("-- Select --"))
+		{
+			passed = ta.selectBy(xpath, 1);
+		}
+		
+		xpath = "(//*[text()[contains(.,'Bill Sort Code:')]]/./following::select)[1]";
+		if(ta.getValueFromSelect(xpath).equals("-- Select --"))
+		{
+			passed = ta.selectBy(xpath, 1);
+		}
+		
+		//CUSTOMER ID
+		if(!CustomerIDProvided)
+		{
+			ProvideCustomerID();
+		}
+		
+		xpath = "(//input[@value='Next>>'])[last()]";
+		passed = ta.clickOn(xpath);
+		
+		return passed;
+	}
+
+	private static boolean ProvideCustomerID()
+	{
+		xpath = "(//*[text()[contains(.,'ID:')]]/./following::select)[1]";
+		passed = ta.selectBy(xpath, CustomeIDType);
+		
+		xpath = "(//*[text()[contains(.,'ID:')]]/./following::input[contains(@class,'MandatoryTextBox')])[1]";
+		passed = ta.waitUntil(xpath, 2);
+		passed = ta.sendDatatoField(xpath, AccountFirstName);
+
+		CustomerIDProvided = true;
 		
 		return passed;
 	}

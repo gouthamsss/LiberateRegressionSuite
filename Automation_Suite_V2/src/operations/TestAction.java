@@ -363,8 +363,9 @@ public class TestAction
 		boolean selectLoaded = false;
 		xpath = xpathLocator;
 		int limit = timetowait * 1000;
+		int selectSize = 0;
 		
-		Select select = new Select(driver.findElement(By.xpath(xpath)));
+		Select select;
 		
 		log("Action - Waiting for : " + xpath + " to load values");
 		
@@ -374,7 +375,9 @@ public class TestAction
 			
 			try
 			{
-				selectLoaded = !select.getOptions().isEmpty();
+				select = new Select(driver.findElement(By.xpath(xpath)));
+				selectSize = select.getOptions().size();
+				selectLoaded = selectSize > 2;
 			}
 			catch(Exception e)
 			{
