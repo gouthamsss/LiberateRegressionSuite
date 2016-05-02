@@ -8,6 +8,7 @@ import operations.TestReport;
 public class CreateNewAccount
 {
 	TestReport report = new TestReport("CreateNewAccount", "");
+    TestAction ta = new TestAction(Operations.getdriver());
 
 	String AccountNumber;
 	String AccountFirstName = TestData.randomString();
@@ -33,7 +34,6 @@ public class CreateNewAccount
     String xpath_1;
     String xpath_2;
 
-    TestAction ta = new TestAction(Operations.getdriver());
     
     public CreateNewAccount(String ApplicationForm)
     {
