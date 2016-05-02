@@ -1,11 +1,15 @@
 package main;
 
-import testcase.CreateNewAccount;
+import testcase.ProvideService;
 
 public class MainClass
 {
 	public static void main(String [] args)
 	{
-		CreateNewAccount.execute();
+//		CreateNewAccount createNewAccount = new CreateNewAccount("fixedResidential","ETFTESTING");
+//		createNewAccount.execute();
+		
+		ProvideService provideService = new ProvideService(false);
+		provideService.execute();
 	}
 }
