@@ -34,7 +34,19 @@ public class CreateNewAccount
     String xpath_2;
 
     TestAction ta = new TestAction(Operations.getdriver());
-
+    
+    public CreateNewAccount(String ApplicationForm)
+    {
+    	this.ApplicationForm 	= ApplicationForm;
+    	SelectServicePackage 	= false;
+    }
+    public CreateNewAccount(String ApplicationForm, String ServicePackage)
+    {
+    	this.ApplicationForm	= ApplicationForm;
+    	this.ServicePackage		= ServicePackage;
+    	SelectServicePackage 	= true;
+    }
+    
     public  void execute()
     {
     	//LoginLogout.login("http://172.21.73.80:8081/liberate-LONI01-S10/");
