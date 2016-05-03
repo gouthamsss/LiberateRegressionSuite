@@ -95,9 +95,6 @@ public class ProvideService
 		return passed;
 	}
 	
-	/**
-	 * @return
-	 */
 	private boolean testStep_2()
 	{
 		while(true)
