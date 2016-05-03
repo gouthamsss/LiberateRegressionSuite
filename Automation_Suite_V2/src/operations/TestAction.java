@@ -25,7 +25,7 @@ import com.google.common.base.Predicate;
 
 public class TestAction 
 {
-	String actionClassVersion = "1.0.3 - Added : Show retrieved Data";
+	String actionClassVersion = "TestAction Class 1.0.4 - Log Improvements";
 	
 	//Variable Declaration
 	WebDriver driver;				//Declare WebDriver
@@ -476,7 +476,7 @@ public class TestAction
 	//Method to redirect console messages
 	public void log(String message)
 	{
-		String msg = "\n" + sdf.format(new Date()) + " : " + message;
+		String msg = sdf.format(new Date()) + " : " + message + "\n";
 		System.out.print(msg);
 	}
 }
