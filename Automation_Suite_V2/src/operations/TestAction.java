@@ -25,7 +25,7 @@ import com.google.common.base.Predicate;
 
 public class TestAction 
 {
-	String actionClassVersion = "1.0.2 - Added : custom wait waitUntilSelectOptionLoaded";
+	String actionClassVersion = "1.0.3 - Added : Show retrieved Data";
 	
 	//Variable Declaration
 	WebDriver driver;				//Declare WebDriver
@@ -103,7 +103,8 @@ public class TestAction
 		
 		log("Action - Getting value from : " + xpathLocator);
 		dataFromPage = driver.findElement(By.xpath(xpathLocator)).getText();
-		
+		log("Value	- '"+dataFromPage+"'");
+
 		return dataFromPage;
 	}
 	
