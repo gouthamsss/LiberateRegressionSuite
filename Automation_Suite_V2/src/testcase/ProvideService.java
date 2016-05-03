@@ -15,11 +15,13 @@ public class ProvideService
 	String department		= "BGSAL";
 	String site				= "BUSG";
     String ServicePackage	= "ETFTESTING";
-	
+	String serviceType		= "PEL";
+    
     boolean passed;
     String xpath;
-	String screenName;
-    
+	String oldScreenName = "";
+    String newScreenName = "";
+	
 	public ProvideService(boolean NewCustomer)
 	{
 		this.NewCustomer = NewCustomer;
@@ -73,6 +75,10 @@ public class ProvideService
 			xpath = "(//*[text()[contains(.,'Site:')]]/./following::select)[1]";
 			passed = ta.selectBy(xpath, site);
 			
+			xpath = "(//*[text()[contains(.,'Service Type:')]]/./following::select)[1]";
+			passed = ta.selectBy(xpath, serviceType);
+			ta.waitFor(1000);
+			
 			xpath = "(//*[text()='Service Package:']/./following::select)[1]";
 			passed = ta.selectBy(xpath, ServicePackage);
 			
@@ -89,20 +95,37 @@ public class ProvideService
 		return passed;
 	}
 	
+	/**
+	 * @return
+	 */
 	private boolean testStep_2()
 	{
 		while(true)
 		{
+			//TODO Handle error if new screen and previous screen are same.
+			oldScreenName = newScreenName;
+			
 			xpath = "(//*[@class='hdrMid'])[1]";
 			ta.waitUntil(xpath, 10);
 			
-			screenName = ta.getDatafromPage(xpath);
-			if(screenName.equals("Pricing Plans"))
+			newScreenName = ta.getDatafromPage(xpath);
+			
+			if(oldScreenName.equals(newScreenName))
+			{
+				ta.log("ERROR OCCURED : Please check the on screen error and contact support");
+				break;
+			}
+			
+			if(newScreenName.equals("Pricing Plans"))
 				pricingPlanScreen();
-			else if(screenName.equals("Service Product"))
+			else if(newScreenName.equals("Service Product"))
 				serviceProducts();
-			else if(screenName.equals("ISP Fields"))
+			else if(newScreenName.equals("ISP Fields"))
 				ISPFields();
+			else if (newScreenName.equals("Product Fields"))
+				productFields();
+			else if (newScreenName.equals("Service Details"))
+				serviceDetails();
 			else
 				break;
 		}
@@ -175,6 +198,42 @@ public class ProvideService
 		passed = ta.clickOn(xpath);
 		
 		xpath = "//*[text()='ISP Fields']";
+		passed = ta.waitUntilElementnotExist(xpath, 5);
+		
+		return passed;
+	}
+	
+	private boolean productFields()
+	{
+		xpath = "//*[text()='Product Fields']";
+		passed = ta.waitUntil(xpath, 5);
+		
+		xpath = "//input[@class='iceInpTxt MandatoryTextBox']";
+		if(ta.elementExist(xpath))
+		{
+			//TODO If mandatory fields exist. Fill them
+		}
+		
+		xpath = "//input[@value='Proceed']";
+		passed = ta.clickOn(xpath);
+		
+		xpath = "//*[text()='Product Fields']";
+		passed = ta.waitUntilElementnotExist(xpath, 5);
+		
+		return passed;
+	}
+	
+	private boolean serviceDetails()
+	{
+		xpath = "//*[text()='Service Details']";
+		passed = ta.waitUntil(xpath, 5);
+		
+		//TODO Handle Service Details screen
+		
+		xpath = "//input[@value='Proceed']";
+		passed = ta.clickOn(xpath);
+		
+		xpath = "//*[text()='Service Details']";
 		passed = ta.waitUntilElementnotExist(xpath, 5);
 		
 		return passed;
