@@ -129,6 +129,7 @@ public class ProvideService
 		return passed;
 	}
 	
+	//Method to handle Pricing Plan screen
 	private boolean pricingPlanScreen()
 	{
 		xpath = "//*[text()='Pricing Plans']";
@@ -145,6 +146,8 @@ public class ProvideService
 		return passed;
 	}
 	
+	
+	//Method to handle service products screen
 	private boolean serviceProducts()
 	{
 		xpath = "//*[text()='Service Product']";
