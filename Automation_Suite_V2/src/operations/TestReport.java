@@ -16,7 +16,7 @@ import com.sun.media.sound.InvalidFormatException;
 
 public class TestReport
 {
-	String TestReportClassVersion = "0.1.1 : Amended : screenshotCount to static";
+	static String ClassVersion = "TestReport 1.0.0 : Removed : Access to main create document method";
 
 	String scenarioName;
 	String reportLocation;
@@ -62,7 +62,7 @@ public class TestReport
 		createDocument();
 	}
 	
-	public void createDocument()
+	private void createDocument()
 	{
 		XWPFDocument doc = new XWPFDocument();
 		String wordDoc = reportLocation + documentName;
