@@ -15,8 +15,10 @@ public class ProvideService
 	String AccountNumber	= "240004430000";
 	String department		= "BGSAL";
 	String site				= "BUSG";
-    String ServicePackage	= "ETFTESTING";
-	String serviceType		= "PEL";
+//  String ServicePackage	= "ETFTESTING";
+    String ServicePackage	= "ADSL";
+//	String serviceType		= "PEL";
+	String serviceType		= "PDL";
     String PELExchange		= "BOT";
     String PELNumberArea	= "BODD";
     
@@ -32,6 +34,7 @@ public class ProvideService
 	String oldScreenName = "";
     String newScreenName = "";
 	
+    int sameScreenRetry	= 0;
     
 	public ProvideService(TestReport report)
 	{
@@ -116,16 +119,32 @@ public class ProvideService
 			xpath = "(//*[text()='Service Package:']/./following::select)[1]";
 			passed = ta.selectBy(xpath, ServicePackage);
 			
-			xpath = "//*[text()[contains(.,'Number of Services')]]";
-			passed = ta.waitUntil(xpath, 3);
-			
-			xpath = "//input[contains(@value,'Proceed')]";
-			passed = ta.clickOn(xpath);
-			
-			report.takeScreenshot();
-			
-			xpath = "//*[text()[contains(.,'Number of Services')]]";
-			passed = ta.waitUntilElementnotExist(xpath, 5);
+			if(serviceType.equals("PDL"))
+			{
+				xpath = "//*[text()[contains(.,'Telephone Service No')]]";
+				passed = ta.waitUntil(xpath, 3);
+				
+				xpath = "//input[contains(@value,'Proceed')]";
+				passed = ta.clickOn(xpath);
+				
+				report.takeScreenshot();
+					
+				xpath = "//*[text()[contains(.,'Telephone Service No')]]";
+				passed = ta.waitUntilElementnotExist(xpath, 5);
+			}
+			else
+			{
+				xpath = "//*[text()[contains(.,'Number of Services')]]";
+				passed = ta.waitUntil(xpath, 3);
+				
+				xpath = "//input[contains(@value,'Proceed')]";
+				passed = ta.clickOn(xpath);
+				
+				report.takeScreenshot();
+				
+				xpath = "//*[text()[contains(.,'Number of Services')]]";
+				passed = ta.waitUntilElementnotExist(xpath, 5);
+			}
 		}
 		
 		return passed;
@@ -145,8 +164,15 @@ public class ProvideService
 			
 			if(oldScreenName.equals(newScreenName))
 			{
-				ta.log("ERROR OCCURED : Please check the on screen error and contact support");
-				break;
+				if(sameScreenRetry <= 1)
+				{
+					sameScreenRetry++;
+				}
+				else
+				{
+					ta.log("ERROR OCCURED : Please check the on screen error and contact support");
+					break;
+				}
 			}
 			
 			if(newScreenName.equals("Pricing Plans"))
@@ -161,7 +187,7 @@ public class ProvideService
 				serviceDetails();
 			else
 			{
-				ta.log("ERROR : The screen '"+newScreenName+"' is not handles. Please contact support");
+				ta.log("ERROR : The screen '"+newScreenName+"' is not handled. Please contact support");
 				break;
 			}
 		}
@@ -279,6 +305,14 @@ public class ProvideService
 		
 		//TODO Handle Pricing plan screen
 		
+		xpath = "//*[text()='Pricing Plan Approval Request']";
+		if(ta.elementExist(xpath))
+		{
+			xpath = "(//*[text()[contains(.,'To be Authorised By:')]]/./following::select)[1]";
+			ta.selectBy(xpath, 1);
+			ta.waitFor(1000);
+		}
+		
 		xpath = "//input[@value='Proceed']";
 		passed = ta.clickOn(xpath);
 		
@@ -375,6 +409,8 @@ public class ProvideService
 		{
 			case "PEL": passed = PELServiceDetailsScreen();
 				break;
+			case "PDL": passed = PDLServiceDetailsScreen();
+				break;
 		}
 		
 		
@@ -425,6 +461,11 @@ public class ProvideService
 		xpath = "(//*[text()[contains(.,'Special Instructions:')]]/./following::textArea)[1]";
 		passed = ta.sendDatatoField(xpath, "Automation Testing");
 		
+		if(serviceType.equals("PDL"))
+		{
+			//TODO Handle Plant item selection
+		}
+		
 		report.takeScreenshot();
 		
 		xpath = "(//*[text()[contains(.,'Same as Account Address:')]]/./following::input)[1]";
@@ -432,6 +473,13 @@ public class ProvideService
 		
 		xpath = "(//*[text()[contains(.,'Address Type:')]]/./following::select)[1]";
 		passed = ta.waitUntilElementnotExist(xpath, 5);
+		
+		return passed;
+	}
+
+	private boolean PDLServiceDetailsScreen()
+	{
+		passed = PELServiceDetailsScreen();
 		
 		return passed;
 	}
