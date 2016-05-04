@@ -25,7 +25,7 @@ import com.google.common.base.Predicate;
 
 public class TestAction 
 {
-	static String ClassVersion = "TestAction Class 1.0.6 - Changes class version to static";
+	static String ClassVersion = "TestAction Class 1.0.7 - Improved wait until element disappear method";
 	
 	//Variable Declaration
 	WebDriver driver;				//Declare WebDriver
@@ -101,10 +101,23 @@ public class TestAction
 
 		String dataFromPage = "";
 		
-		log("Action - Getting value from : " + xpathLocator);
-		dataFromPage = driver.findElement(By.xpath(xpathLocator)).getText();
-		log("Value	- '"+dataFromPage+"'");
-
+		for(i = 0; i < retry; i++)
+		{
+			try
+			{
+				log("Action - Getting value from : " + xpathLocator);
+				dataFromPage = driver.findElement(By.xpath(xpathLocator)).getText();
+				log("Value	- '"+dataFromPage+"'");
+				break;
+			}
+			catch(Exception e)
+			{
+				handleExcpetion(e);
+				if (i == (retry-1))
+					passed = false;
+			}			
+		}
+		
 		return dataFromPage;
 	}
 	
@@ -294,6 +307,8 @@ public class TestAction
 	//Wait until a particular Element disappears.	
 	public boolean waitUntilElementnotExist(String xpathLocator, int timetowait)
 	{
+		passed = true;
+		
 		xpath = xpathLocator;
 		waitPeriod = new WebDriverWait(driver, timetowait);
 		
@@ -307,7 +322,11 @@ public class TestAction
 			catch(TimeoutException e)
 			{
 				log("ERROR - TimeoutException Occured while looking for : '"+xpath+"'.");
-				passed = false;
+			}
+			finally
+			{
+				if(elementExist(xpathLocator))
+					passed = false;
 			}
 		}	
 		else
