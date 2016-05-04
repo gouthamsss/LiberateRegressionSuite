@@ -2,12 +2,14 @@ package testcase;
 
 import operations.Operations;
 import operations.TestAction;
+import operations.TestReport;
 
 public class SalesSignoff 
 {
-	static String classversion = "SalesSignoff Class 0.0.1 : New Class SalesSignoff";
+	static String classversion = "SalesSignoff Class 0.0.3 : Added - Screenshot";
 
 	TestAction ta = new TestAction(Operations.getdriver());
+	TestReport report;
 	
 	String xpath;
 	boolean passed;
@@ -16,10 +18,17 @@ public class SalesSignoff
 	String ServiceNumber;
 	String ServiceOrder;
 	
+	public SalesSignoff(TestReport report)
+	{
+		this.report = report;
+	}
+	
 	public boolean signoff()
 	{		
 		xpath = "//*[text()='Service Order Lines']";
 		passed = ta.waitUntil(xpath, 10);
+		
+		report.takeScreenshot();
 		
 		ta.closeOKpopup();
 		
@@ -42,10 +51,14 @@ public class SalesSignoff
 		
 		xpath = "//input[@value='Submit Order']";
 		passed = ta.clickOn(xpath);
+		report.takeScreenshot();
 		
 		xpath = "//input[@value='OK']";
 		passed = ta.waitUntil(xpath, 5);
-		passed = ta.clickOn(xpath);
+		
+		report.takeScreenshot();
+		
+		passed = ta.clickOn(xpath);		
 		passed = ta.waitUntilElementnotExist(xpath, 5);
 
 		return passed;
