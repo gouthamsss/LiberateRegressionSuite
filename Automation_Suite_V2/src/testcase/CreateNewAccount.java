@@ -81,7 +81,6 @@ public class CreateNewAccount
             if (!passed)
                     break;
 
-            report.createScreenshotDocument();
             break;
         }
         //ta.closeSession();
