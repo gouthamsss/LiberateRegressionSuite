@@ -25,7 +25,7 @@ import com.google.common.base.Predicate;
 
 public class TestAction 
 {
-	String actionClassVersion = "TestAction Class 1.0.4 - Log Improvements";
+	String actionClassVersion = "TestAction Class 1.0.5 - Improved element identification logs";
 	
 	//Variable Declaration
 	WebDriver driver;				//Declare WebDriver
@@ -232,7 +232,7 @@ public class TestAction
 	
 	//_____COMBO USER ACTION SECTION_____//
 	//Closes a pop up with 'OK' button (by clicking on 'OK' button)
-	public void closeOKpopup()
+	public boolean closeOKpopup()
 	{
 		String xpathforOK = "//input[contains (@value,'OK')]";
 		
@@ -243,12 +243,16 @@ public class TestAction
 			{
 				clickOn(xpathforOK);
 				waitUntilElementnotExist(xpathforOK, 5);
+				passed = true;
 			}
 		} 
 		catch (Exception e) 
 		{
 			handleExcpetion(e);
+			passed = false;
 		}
+		
+		return passed;
 	}
 	
 	//Closes a pop up with 'Yes' and 'No' button (by clicking on 'Yes' button)
@@ -405,9 +409,19 @@ public class TestAction
 	//Check if an element Exists. True : Exists, False : Doesn't Exists
 	public boolean elementExist(String xpathLocator)
 	{
-		xpath = xpathLocator;
+		boolean exists;
 
-		return(driver.findElements(By.xpath(xpathLocator)).size() != 0);
+		log("Action : Checkign availability of element '"+xpathLocator+"'");
+
+		xpath = xpathLocator;
+		exists = driver.findElements(By.xpath(xpathLocator)).size() != 0;
+		
+		if(exists)
+			log("Element Available");
+		else
+			log("Element is NOT Available");
+		
+		return exists;
 	}
 	
 	//move mouse to given location
