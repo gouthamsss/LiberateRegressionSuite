@@ -7,17 +7,17 @@ import operations.TestReport;
 
 public class CreateNewAccount
 {
-	TestReport report = new TestReport("CreateNewAccount", "");
+	TestReport report;
     TestAction ta = new TestAction(Operations.getdriver());
 
-	String AccountNumber;
+	public String AccountNumber;
 	String AccountFirstName = TestData.randomString();
     String AccountLastName = TestData.randomString();
     //String CustomerID;
     String ApplicationForm = "fixedResidential";
     String CustomerType = "R";
-    String ServiceType = "PEL";
-    String ServicePackage = "ETFTESTING";
+    public String ServiceType = "PEL";
+    public String ServicePackage = "ETFTESTING";
     String CustomeIDType = "NI";
     String Company = "CYN";
     String MarketingCategory = "990000";
@@ -35,13 +35,15 @@ public class CreateNewAccount
     String xpath_2;
 
     
-    public CreateNewAccount(String ApplicationForm)
+    public CreateNewAccount(TestReport report, String ApplicationForm)
     {
+    	this.report				= report;
     	this.ApplicationForm 	= ApplicationForm;
     	SelectServicePackage 	= false;
     }
-    public CreateNewAccount(String ApplicationForm, String ServicePackage)
+    public CreateNewAccount(TestReport report, String ApplicationForm, String ServicePackage)
     {
+    	this.report				= report;
     	this.ApplicationForm	= ApplicationForm;
     	this.ServicePackage		= ServicePackage;
     	SelectServicePackage 	= true;
@@ -82,7 +84,7 @@ public class CreateNewAccount
             report.createScreenshotDocument();
             break;
         }
-        ta.closeSession();
+        //ta.closeSession();
 	}
 
 	private  boolean testStep_1()
