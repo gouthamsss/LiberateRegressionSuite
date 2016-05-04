@@ -25,7 +25,7 @@ import com.google.common.base.Predicate;
 
 public class TestAction 
 {
-	String actionClassVersion = "TestAction Class 1.0.5 - Improved element identification logs";
+	static String ClassVersion = "TestAction Class 1.0.6 - Changes class version to static";
 	
 	//Variable Declaration
 	WebDriver driver;				//Declare WebDriver
