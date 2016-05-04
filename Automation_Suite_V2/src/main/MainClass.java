@@ -1,5 +1,6 @@
 package main;
 
+import operations.TestReport;
 import testcase.ProvideService;
 
 public class MainClass
@@ -8,8 +9,12 @@ public class MainClass
 	{
 //		CreateNewAccount createNewAccount = new CreateNewAccount("fixedResidential","ETFTESTING");
 //		createNewAccount.execute();
-		
-		ProvideService provideService = new ProvideService(false);
+
+		TestReport report = new TestReport("ProvideService", "Reports\\");
+
+		ProvideService provideService = new ProvideService(report, "240004430000");
 		provideService.execute();
+		report.createScreenshotDocument();
+
 	}
 }
