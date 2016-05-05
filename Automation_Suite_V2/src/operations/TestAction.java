@@ -25,7 +25,7 @@ import com.google.common.base.Predicate;
 
 public class TestAction 
 {
-	static String ClassVersion = "TestAction Class 1.0.7 - Improved wait until element disappear method";
+	static String ClassVersion = "TestAction Class 1.0.8 - Corrected Error messeges";
 	
 	//Variable Declaration
 	WebDriver driver;				//Declare WebDriver
@@ -430,7 +430,7 @@ public class TestAction
 	{
 		boolean exists;
 
-		log("Action : Checkign availability of element '"+xpathLocator+"'");
+		log("Action : Checking availability of element '"+xpathLocator+"'");
 
 		xpath = xpathLocator;
 		exists = driver.findElements(By.xpath(xpathLocator)).size() != 0;
