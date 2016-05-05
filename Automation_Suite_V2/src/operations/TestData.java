@@ -5,13 +5,12 @@ import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.sql.Statement;
 
 
 public class TestData
 {
-	public static String testDataClassVersion = "TestData 0.1.3 : Added: Database Connectivity";
+	public static String testDataClassVersion = "TestData 0.1.4 : Added: Validate Data File";
 	
 	public static SecureRandom random	= new SecureRandom();
 	public static TestAction ta			= new TestAction(Operations.getdriver());
@@ -19,7 +18,7 @@ public class TestData
 	//Save and Retrieve Data
 	public static boolean validateDBFile()
 	{
-		File dbFile				= new File("\\Data\\data.db");
+		File dbFile				= new File("data.db");
 	    Statement statement		= null;
 	    Connection connection	= null;
 	    
@@ -28,6 +27,26 @@ public class TestData
 			try
 			{
 				dbFile.createNewFile();
+				ta.log("Created Data file");
+		    	connection = DriverManager.getConnection("jdbc:sqlite:data.db");
+			    ta.log("Opened database successfully");
+			    
+				statement = connection.createStatement();
+				
+				String fieldDetailsTable = "CREATE TABLE Field_Detail ("+
+										   "id             INTEGER PRIMARY KEY AUTOINCREMENT"+
+										   "                        UNIQUE"+
+										   "                        NOT NULL,"+
+										   "environment    STRING  NOT NULL,"+
+										   "servicepackage STRING,"+
+										   "fieldname      STRING  NOT NULL,"+
+										   "fieldtype      STRING  NOT NULL,"+
+										   "fieldmaxlength INTEGER,"+
+										   "fieldminlength INTEGER);";
+				
+				statement.executeUpdate(fieldDetailsTable);
+				ta.log("Configured data file");
+				//Create Tables
 			}
 			catch (Exception e)
 			{
@@ -35,34 +54,6 @@ public class TestData
 				e.printStackTrace();
 			}
 		}
-		
-	    try
-	    {
-	    	connection = DriverManager.getConnection("jdbc:sqlite:data.db");
-		    ta.log("Opened database successfully");
-		}
-	    catch (SQLException e)
-	    {
-			// TODO Auto-generated catch block
-	    	ta.log("ERROR : Not able to connect to local database. Please contact support with log");
-			e.printStackTrace();
-		}
-	    
-	    if(!connection.equals(null))
-	    {
-	        try
-	        {
-				statement = connection.createStatement();
-			}
-	        catch (SQLException e)
-	        {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-	    }
-		
-		
 		return true;
 	}
 	
