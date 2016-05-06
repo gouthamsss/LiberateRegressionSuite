@@ -65,11 +65,11 @@ public class TestData
 		
 		return customerName;
 	}
-	public static long  randomNumeric()
+	public static String  randomNumeric()
 	{
 		long max = 9999999999L;
 		max = (long) (Math.random() * ((max - 1) + 1));
 		
-		return max;
+		return Long.toString(max);
 	}
 }
