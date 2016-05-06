@@ -17,6 +17,7 @@ public class TestCase
 		
 		report.createScreenshotDocument();
 	}
+	
 	public static void PDLExistingCustomer()
 	{
 		TestReport report = new TestReport("PDLExistingCustomer", "Reports\\");
@@ -40,6 +41,33 @@ public class TestCase
 		ProvideService provideService		= new ProvideService(report, createNewAccount.AccountNumber);
 		provideService.NewCustomer			= true;
 		provideService.PELPDLProvisioning	= true;
+		provideService.ServiceType = createNewAccount.ServiceType;
+		provideService.ServicePackage = createNewAccount.ServicePackage;
+		provideService.execute();
+		
+		report.createScreenshotDocument();
+	}
+	
+	public static void PCLExistingCustomer()
+	{
+		TestReport report = new TestReport("PCLExistingCustomer", "Reports\\");
+		ProvideService provideService = new ProvideService(report, "240004430000");
+		provideService.NewCustomer = false;
+		provideService.ServiceType = "PCL";
+		provideService.ServicePackage = "PCL_Res";
+		provideService.execute();
+	}
+	
+	public static void PCLNewCustomer()
+	{
+		TestReport report = new TestReport("PCLNewCustomer", "Reports\\");
+		CreateNewAccount createNewAccount = new CreateNewAccount(report, "fixedResidential","PCL_Res");
+		createNewAccount.ServiceType = "PCL";
+		createNewAccount.ServicePackage = "PCL_Res";
+		createNewAccount.execute();
+
+		ProvideService provideService = new ProvideService(report, createNewAccount.AccountNumber);
+		provideService.NewCustomer = true;
 		provideService.ServiceType = createNewAccount.ServiceType;
 		provideService.ServicePackage = createNewAccount.ServicePackage;
 		provideService.execute();
