@@ -1,7 +1,10 @@
 package testcase;
 
+import operations.ErrorHandler;
 import operations.Operations;
 import operations.TestAction;
+import operations.TestConfiguration;
+import operations.TestData;
 import operations.TestReport;
 
 public class ProvideService 
@@ -11,28 +14,35 @@ public class ProvideService
     TestAction ta = new TestAction(Operations.getdriver());
     SalesSignoff sales; 
     
+    //Configuration Variables
 	public boolean NewCustomer 		= false;
-    public String ServicePackage	= "ADSL";
-	public String ServiceType		= "PDL";
+    public String ServicePackage	= "";
+	public String ServiceType		= "";
     public boolean PELPDLProvisioning	= false;
-    boolean runningPDL = false; 
     
+    //Test Data
 	String AccountNumber	= "";
 	String department		= "BGSAL";
 	String site				= "BUSG";
     String PELExchange		= "BOT";
     String PELNumberArea	= "BODD";
+    String PCLExchange		= "MSCA";
+    String PCLNumberArea	= "SMPO";
+    
     String salesAccNumber	= "";
     String salesServiceNum	= "";
     String salesOrderNumber	= "";
+    String numberAllocation;
+    boolean fastTrack 		= false;
     
+    String OnScreenError;
+    
+    //Private Variables
+    boolean runningPDL = false; 
     boolean passed;
     String xpath;
-    String numberAllocation;
-    boolean fastTrack 			= false;
 	String oldScreenName = "";
     String newScreenName = "";
-	
     int sameScreenRetry	= 0;
 	
 	public ProvideService(TestReport report, String AccountNumber)
@@ -192,7 +202,11 @@ public class ProvideService
 				}
 				else
 				{
+					OnScreenError = ta.getDatafromPage(xpath);
+					ErrorHandler.handleOnScreenError(OnScreenError);
+					
 					ta.log("ERROR OCCURED : Please check the on screen error and contact support");
+					
 					break;
 				}
 			}
@@ -219,14 +233,13 @@ public class ProvideService
 	
 	private boolean testStep_3()
 	{
-		long max = 9999999999L;
-		max = (long) (Math.random() * ((max - 1) + 1));
+		String max = TestData.randomNumeric();
 		
 		xpath = "//*[text()='Contract Details']";
 		passed = ta.waitUntil(xpath, 10);
 		
 		xpath = "(//*[text()[contains(.,'Contract Number:')]]/./following::input)[1]";
-		passed = ta.sendDatatoField(xpath, Long.toString(max));
+		passed = ta.sendDatatoField(xpath, max);
 		
 		xpath = "(//*[text()[contains(.,'Contract Description:')]]/./following::textArea)[1]";
 		passed = ta.sendDatatoField(xpath, "Contract Description");
@@ -361,6 +374,19 @@ public class ProvideService
 		passed = ta.waitUntil(xpath, 5);
 		
 		//TODO Handle Service Products screen
+		if(ServiceType.equals("PCL"))
+		{
+			//Check if needs to select handset
+			xpath = "//*[text()='No products selected']";
+			if(ta.elementExist(xpath))
+			{
+				xpath = "//tr[@id='packageProductSelection:availableProductDetails:0']";
+				passed = ta.clickOn(xpath);
+				
+				xpath = "//*[text()='No products selected']";
+				passed = ta.waitUntilElementnotExist(xpath, 3);
+			}
+		}
 		
 		xpath = "//input[@value='Proceed']";
 		passed = ta.clickOn(xpath);
@@ -400,6 +426,8 @@ public class ProvideService
 		if(ta.elementExist(xpath))
 		{
 			//TODO If mandatory fields exist. Fill them
+			ta.log("Mandatory Fields Exists. Calling stub");
+			TestConfiguration.stubFillProductFields();
 		}
 		
 		xpath = "//input[@value='Proceed']";
@@ -439,6 +467,8 @@ public class ProvideService
 			case "PEL": passed = PELServiceDetailsScreen();
 				break;
 			case "PDL": passed = PDLServiceDetailsScreen();
+				break;
+			case "PCL": passed = PCLServiceDetailsScreen();
 				break;
 		}
 		
@@ -512,6 +542,59 @@ public class ProvideService
 	private boolean PDLServiceDetailsScreen()
 	{
 		passed = PELServiceDetailsScreen();
+		
+		return passed;
+	}
+
+	private boolean PCLServiceDetailsScreen()
+	{
+		xpath = "(//*[text()[contains(.,'Exchange:')]]/./following::select)[1]";
+		passed = ta.selectBy(xpath, PCLExchange);
+	
+		xpath = "(//*[text()[contains(.,'Number Area:')]]/./following::select[@disabled='disabled'])[1]";
+		passed = ta.waitUntilElementnotExist(xpath, 5);
+	
+		xpath = "(//*[text()[contains(.,'Number Area:')]]/./following::select)[1]";
+		passed = ta.selectBy(xpath, PCLNumberArea);
+		
+		xpath = "(//*[text()[contains(.,'Service Number Allocation:')]]/./following::select)[1]";
+		numberAllocation = ta.getValueFromSelect(xpath);
+		
+		if(!numberAllocation.equals("Auto"))
+		{
+			passed = ta.selectBy(xpath, "Auto");
+			
+			xpath = "//input[@value='Deallocate']";
+			passed = ta.waitUntil(xpath, 5);
+		}
+		
+		xpath = "//input[@value='Find' and @disabled='disabled']";
+		if(!ta.elementExist(xpath)) 
+		{
+			xpath = "//input[@value='Find']";
+			passed = ta.clickOn(xpath);
+			
+			xpath = "//input[@value='Deallocate']";
+			passed = ta.waitUntil(xpath, 5);
+		}
+		
+		xpath = "//input[@value='Look Up']";
+		passed = ta.clickOn(xpath);
+		
+		xpath = "//*[text()='More Numbers exist matching the details entered']";
+		passed = ta.waitUntil(xpath, 5);
+		
+		xpath = "(//*[text()[contains(.,'SIM')]]/./following::select)[1]";
+		passed = ta.selectBy(xpath, 4);
+		
+		xpath = "//*[text()='More Numbers exist matching the details entered']";
+		passed = ta.waitUntilElementnotExist(xpath, 5);
+		
+		xpath = "(//*[text()[contains(.,'Same as Account Address:')]]/./following::input)[1]";
+		passed = ta.clickOn(xpath);
+		
+		xpath = "(//*[text()[contains(.,'Address Type:')]]/./following::select)[1]";
+		passed = ta.waitUntilElementnotExist(xpath, 5);
 		
 		return passed;
 	}
