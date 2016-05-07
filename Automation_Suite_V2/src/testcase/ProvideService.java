@@ -1,5 +1,6 @@
 package testcase;
 
+import main.MainClass;
 import operations.ErrorHandler;
 import operations.Operations;
 import operations.TestAction;
@@ -56,7 +57,7 @@ public class ProvideService
 	{
 		if(!NewCustomer)
 		{
-			LoginLogout.login("http://172.21.73.80:8081/liberate-LONI01-S10/");
+			LoginLogout.login(MainClass.AUTURL);
 	    	//LoginLogout.login("http://172.21.73.80:8083/liberate-LONI02-S06/");
 		}
 		

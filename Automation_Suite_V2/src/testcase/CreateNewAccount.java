@@ -1,5 +1,6 @@
 package testcase;
 
+import main.MainClass;
 import operations.Operations;
 import operations.TestAction;
 import operations.TestData;
@@ -52,7 +53,7 @@ public class CreateNewAccount
     public  void execute()
     {
     	//LoginLogout.login("http://172.21.73.80:8081/liberate-LONI01-S10/");
-        LoginLogout.login("http://172.21.73.80:8083/liberate-LONI02-S06/");
+        LoginLogout.login(MainClass.AUTURL);
 
         while (true)
         {
