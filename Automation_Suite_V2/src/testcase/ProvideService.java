@@ -405,7 +405,18 @@ public class ProvideService
 		xpath = "//*[text()='ISP Fields']";
 		passed = ta.waitUntil(xpath, 5);
 		
-		//TODO Handle ISP Fields screen
+		//ISP Field Handling
+		xpath = "(//*[text()[contains(.,'Service Order No')]]/./following::span)[1]";
+		String email = ta.getDatafromPage(xpath);
+				
+		xpath = "(//*[text()[contains(.,'Email')]]/./following::input)[1]";
+		passed = ta.sendDatatoField(xpath, email);
+		
+		xpath = "(//*[text()[contains(.,'Email Address')]]/./following::select)[1]";
+		passed = ta.selectBy(xpath, 1);
+		
+		xpath = "(//*[text()[contains(.,'Password')]]/./following::input)[2]";
+		passed = ta.sendDatatoField(xpath, "A!2"+TestData.randomString());
 		
 		xpath = "//input[@value='Proceed']";
 		passed = ta.clickOn(xpath);
