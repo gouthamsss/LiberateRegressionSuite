@@ -63,4 +63,37 @@ public class SalesSignoff
 
 		return passed;
 	}
+	
+	public boolean addMore()
+	{
+		xpath = "//*[text()='Service Order Lines']";
+		passed = ta.waitUntil(xpath, 10);
+		
+		report.takeScreenshot();
+		
+		ta.closeOKpopup();
+		
+		xpath = "(//*[text()[contains(.,'Account Number:')]]/./following::*)[1]";
+		this.AccountNumber = ta.getDatafromPage(xpath);
+		
+		xpath = "(//*[text()[contains(.,'Service No:')]]/./following::*)[1]";
+		this.ServiceNumber = ta.getDatafromPage(xpath);
+		
+		xpath = "(//*[text()[contains(.,'Service Order No:')]]/./following::*)[1]";
+		this.ServiceOrder = ta.getDatafromPage(xpath);
+		
+		xpath = "//input[@value='Confirm Payment Amounts' and @disabled='disabled']";
+		if(!ta.elementExist(xpath))
+		{
+			//TODO Confirm Payments
+		}
+		
+		//TODO Handle if service charge needs to be added.
+		
+		xpath = "//input[@value='Add More']";
+		passed = ta.clickOn(xpath);
+		report.takeScreenshot();
+		
+		return passed;
+	}
 }
