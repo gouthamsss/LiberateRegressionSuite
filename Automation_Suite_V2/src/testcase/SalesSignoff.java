@@ -82,10 +82,30 @@ public class SalesSignoff
 		xpath = "(//*[text()[contains(.,'Service Order No:')]]/./following::*)[1]";
 		this.ServiceOrder = ta.getDatafromPage(xpath);
 		
+		//Check for Appointment Detail
+		xpath = "(//*[text()[contains(.,'Municipality Code:')]]/./following::select[@class='iceSelOneMnu MandatoryListBox'])[1]";
+		if(ta.elementExist(xpath))
+		{
+			passed = ta.selectBy(xpath, 1);
+			ta.waitFor(1000);
+		}
+		
 		xpath = "//input[@value='Confirm Payment Amounts' and @disabled='disabled']";
 		if(!ta.elementExist(xpath))
 		{
 			//TODO Confirm Payments
+			xpath = "//input[@type='checkbox' and @checked='checked']";
+			for(int i = 0; i<5; i++)
+			{
+				if(ta.elementExist(xpath))
+				{
+					ta.clickOn(xpath);
+				}
+				else
+				{
+					break;
+				}
+			}
 		}
 		
 		//TODO Handle if service charge needs to be added.
