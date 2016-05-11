@@ -2,12 +2,15 @@ package main;
 
 import operations.TestReport;
 import testcase.CreateNewAccount;
+import testcase.LoginLogout;
 import testcase.ProvideService;
 
 public class TestCase 
 {
 	public static void PELExistingCustomer()
 	{
+		LoginLogout.login(MainClass.AUTURL);
+
 		TestReport report = new TestReport("PELExistingCustomer", "Reports\\");
 
 		ProvideService provideService = new ProvideService(report, "240004430000");
@@ -20,6 +23,8 @@ public class TestCase
 	
 	public static void PDLExistingCustomer()
 	{
+		LoginLogout.login(MainClass.AUTURL);
+
 		TestReport report = new TestReport("PDLExistingCustomer", "Reports\\");
 
 		ProvideService provideService = new ProvideService(report, "240004430000");
@@ -32,6 +37,8 @@ public class TestCase
 	
 	public static void PELPDLNewCustomer()
 	{
+		LoginLogout.login(MainClass.AUTURL);
+
 		TestReport report = new TestReport("PELPDLNewCustomer", "Reports\\");
 		CreateNewAccount createNewAccount = new CreateNewAccount(report, "fixedResidential","ETFTESTING");
 		createNewAccount.ServiceType = "PEL";
@@ -50,6 +57,8 @@ public class TestCase
 	
 	public static void PCLExistingCustomer()
 	{
+		LoginLogout.login(MainClass.AUTURL);
+
 		TestReport report = new TestReport("PCLExistingCustomer", "Reports\\");
 		ProvideService provideService = new ProvideService(report, "240004430000");
 		provideService.NewCustomer = false;
@@ -60,6 +69,8 @@ public class TestCase
 	
 	public static void PCLNewCustomer()
 	{
+		LoginLogout.login(MainClass.AUTURL);
+
 		TestReport report = new TestReport("PCLNewCustomer", "Reports\\");
 		CreateNewAccount createNewAccount = new CreateNewAccount(report, "fixedResidential","PCL_Res");
 		createNewAccount.ServiceType = "PCL";
@@ -71,6 +82,63 @@ public class TestCase
 		provideService.ServiceType = createNewAccount.ServiceType;
 		provideService.ServicePackage = createNewAccount.ServicePackage;
 		provideService.execute();
+		
+		report.createScreenshotDocument();
+	}
+	
+	public static void PTVExisting()
+	{
+		LoginLogout.login(MainClass.AUTURL);
+
+		TestReport report = new TestReport("PTVExisting", "Reports\\");
+
+		ProvideService provideService = new ProvideService(report, "240004430000");
+		provideService.ServiceType = "PTV";
+		provideService.ServicePackage = "PTV_RES";
+		provideService.execute();
+		
+		report.createScreenshotDocument();
+	}
+	
+	public static void PELAddMorePDL()
+	{
+		LoginLogout.login(MainClass.AUTURL);
+
+		TestReport report = new TestReport("PELAddMorePDL", "Reports\\");
+
+		ProvideService providePELService	= new ProvideService(report, "240004430000");
+		providePELService.ServiceType		= "PEL";
+		providePELService.ServicePackage	= "ETFTESTING";
+		providePELService.AddMore			= "PDL";
+		providePELService.execute();
+		
+		ProvideService providePDLService	= new ProvideService(report, "240004430000");
+		providePDLService.ServiceType		= "PDL";
+		providePDLService.ServicePackage	= "ADSL";
+		providePDLService.AddMoreFlow		= true;
+		providePDLService.runningPDL		= true;
+		providePDLService.execute();
+		
+		report.createScreenshotDocument();
+	}
+	
+	public static void PELAddMorePCL()
+	{
+		LoginLogout.login(MainClass.AUTURL);
+
+		TestReport report = new TestReport("PELAddMorePDL", "Reports\\");
+
+		ProvideService providePELService	= new ProvideService(report, "240004430000");
+		providePELService.ServiceType		= "PEL";
+		providePELService.ServicePackage	= "ETFTESTING";
+		providePELService.AddMore			= "PCL";
+		providePELService.execute();
+		
+		ProvideService providePDLService	= new ProvideService(report, "240004430000");
+		providePDLService.ServiceType		= "PCL";
+		providePDLService.ServicePackage	= "PCL_Res";
+		providePDLService.AddMoreFlow		= true;
+		providePDLService.execute();
 		
 		report.createScreenshotDocument();
 	}
