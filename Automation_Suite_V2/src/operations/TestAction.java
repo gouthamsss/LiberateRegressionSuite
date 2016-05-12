@@ -4,6 +4,7 @@ import java.awt.AWTException;
 import java.awt.Robot;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
@@ -25,7 +26,7 @@ import com.google.common.base.Predicate;
 
 public class TestAction 
 {
-	static String ClassVersion = "TestAction Class 1.0.8 - Corrected Error messeges";
+//	static String ClassVersion = "TestAction Class 1.1.0 - Added methods to get and check values in select";
 	
 	//Variable Declaration
 	WebDriver driver;				//Declare WebDriver
@@ -223,6 +224,28 @@ public class TestAction
 		return selectedValue;
 	}
 	
+	public boolean checkElementinSelect(String xpathLocator, String ElementToFind)
+	{
+		
+		List <WebElement> selectValues = getAllfromSelect(xpathLocator);
+		
+		for(WebElement element: selectValues)
+		{
+			System.out.println(element.getText());
+			if(element.getText().contains(ElementToFind))
+			{
+				passed = true;
+				break;
+			}
+			else 
+			{
+				passed = false;
+			}
+		}
+				
+		return passed;
+	}
+	
 	//Wait until an element exist for long amount of time
 	public boolean waitUntil(String xpathLocator, int timetowait)
 	{
@@ -254,7 +277,7 @@ public class TestAction
 			waitFor(500);
 			if (driver.findElements(By.xpath(xpathforOK)).size() != 0)
 			{
-				clickOn(xpathforOK);
+				driver.findElement(By.xpath(xpathforOK)).click();
 				waitUntilElementnotExist(xpathforOK, 5);
 				passed = true;
 			}
@@ -278,7 +301,7 @@ public class TestAction
 			waitFor(500);
 			if (driver.findElements(By.xpath(xpathforYesNo)).size() != 0)
 			{
-				clickOn(xpathforYesNo);
+				driver.findElement(By.xpath(xpathforYesNo)).click();
 				waitUntilElementnotExist(xpathforYesNo, 5);
 			}
 			waitFor(500);
@@ -504,6 +527,15 @@ public class TestAction
 	{
 		driver.close();
 		driver.quit();
+	}
+	
+	//Returns all element in a select by list
+	public List<WebElement> getAllfromSelect(String xpathLocator)
+	{
+        Select select = new Select(driver.findElement(By.xpath(xpathLocator)));
+        List <WebElement> elementcount = (List<WebElement>) select.getOptions();
+		
+		return elementcount;
 	}
 	
 	//Method to redirect console messages
