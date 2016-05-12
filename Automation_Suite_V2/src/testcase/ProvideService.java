@@ -103,7 +103,9 @@ public class ProvideService
 			{
 				xpath = "(//*[text()[contains(.,'Department:')]]/./following::select)[1]";
 				passed = ta.selectBy(xpath, department);
-					
+				
+				ta.checkElementinSelect(xpath, "");
+				
 				xpath = "(//*[text()[contains(.,'Site:')]]/./following::select[@disabled = 'disabled'])[1]";
 				passed = ta.waitUntilElementnotExist(xpath, 2);
 					
@@ -125,7 +127,7 @@ public class ProvideService
 			
 				xpath = "(//*[text()[contains(.,'Department:')]]/./following::select)[1]";
 				passed = ta.selectBy(xpath, department);
-					
+				
 				xpath = "(//*[text()[contains(.,'Site:')]]/./following::select[@disabled = 'disabled'])[1]";
 				passed = ta.waitUntilElementnotExist(xpath, 2);
 					
@@ -133,6 +135,16 @@ public class ProvideService
 				passed = ta.selectBy(xpath, site);
 					
 				xpath = "(//*[text()[contains(.,'Service Type:')]]/./following::select)[1]";
+				passed = ta.checkElementinSelect(xpath, ServiceType);
+				if(passed)
+				{
+					ta.log("Service Type '" + ServiceType + "' is Available");
+				}
+				else
+				{
+					ta.log("Service Type '" + ServiceType + "' is NOT Available. Please check the BU Param configuration or the user can provision the provided Service Type");
+					return false;
+				}
 				passed = ta.selectBy(xpath, ServiceType);
 				ta.waitFor(1000);
 					
