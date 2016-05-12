@@ -13,7 +13,7 @@ public class TestCase
 
 		TestReport report = new TestReport("PELExistingCustomer", "Reports\\");
 
-		ProvideService provideService = new ProvideService(report, "240004430000");
+		ProvideService provideService = new ProvideService(report, "260003110000");
 		provideService.ServiceType = "PEL";
 		provideService.ServicePackage = "ETFTESTING";
 		provideService.execute();
