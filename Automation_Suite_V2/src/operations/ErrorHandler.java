@@ -7,10 +7,12 @@ public class ErrorHandler
 	static String xpath;
 	static String ProductField;
 	static String ErrorDescription;
+	static String onscreenError;
 	static boolean descriptionOnly = false;
 	
 	public static void handleOnScreenError(String OnScreenErrorMessage)
 	{
+		onscreenError = OnScreenErrorMessage;
 		xpath = "(//*[@class='hdrMid'])[1]";
 		String ScreenName = ta.getDatafromPage(xpath);
 		
@@ -18,9 +20,14 @@ public class ErrorHandler
 		{	
 			handleProductFields(OnScreenErrorMessage);
 		}
+		else if(ScreenName.equals("Service Product"))
+		{	
+			handleProductFields(OnScreenErrorMessage);
+		}
 		else
 		{
 			ta.log("ERROR : Unhandles Page. Please contact support with onscreen log and screenshot");
+			ta.log("ONSCREEN ERROR : " + OnScreenErrorMessage);
 		}
 	}
 	
@@ -47,6 +54,16 @@ public class ErrorHandler
 		{
 			xpath = "(//*[text()[contains(.,'"+ProductField+"')]]/./following::input)[1]";
 			ta.sendDatatoField(xpath, TestData.randomString());
+		}
+		else
+		{
+			if(ErrorDescription.contains("Set Top Box Secondary Product must be selected"))
+			{
+				ta.log("User Action Required : Please select a Set Top Box");
+				
+				xpath = "//*[text()[contains(.,'"+onscreenError+"')]]";
+				ta.waitUntilElementnotExist(xpath, 5);
+			}
 		}
 	}
 	

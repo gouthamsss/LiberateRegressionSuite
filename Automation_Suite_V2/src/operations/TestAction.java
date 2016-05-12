@@ -224,6 +224,7 @@ public class TestAction
 		return selectedValue;
 	}
 	
+	//Check if a particular value is available in Select
 	public boolean checkElementinSelect(String xpathLocator, String ElementToFind)
 	{
 		
@@ -244,6 +245,13 @@ public class TestAction
 		}
 				
 		return passed;
+	}
+	
+	public int numberofElementsinSelect(String xpathLocator)
+	{
+		List <WebElement> selectValues = getAllfromSelect(xpathLocator);
+		
+		return selectValues.size();
 	}
 	
 	//Wait until an element exist for long amount of time

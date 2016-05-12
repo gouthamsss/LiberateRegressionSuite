@@ -100,6 +100,20 @@ public class TestCase
 		report.createScreenshotDocument();
 	}
 	
+	public static void PTIExisting()
+	{
+		LoginLogout.login(MainClass.AUTURL);
+
+		TestReport report = new TestReport("PTIExisting", "Reports\\");
+
+		ProvideService provideService = new ProvideService(report, "230007730000");
+		provideService.ServiceType = "PTI";
+		provideService.ServicePackage = "IPTVBasicS";
+		provideService.execute();
+		
+		report.createScreenshotDocument();
+	}
+	
 	public static void PELAddMorePDL()
 	{
 		LoginLogout.login(MainClass.AUTURL);

@@ -235,6 +235,8 @@ public class ProvideService
 				productFields();
 			else if (newScreenName.equals("Service Details"))
 				serviceDetails();
+			else if (newScreenName.equals("Provide IPTV Service (PTI)"))
+				PTIServiceDetailsScreen();
 			else
 			{
 				ta.log("ERROR : The screen '"+newScreenName+"' is not handled. Please contact support");
@@ -525,6 +527,59 @@ public class ProvideService
 		
 		return passed;
 	}
+	
+	private boolean PTIServiceDetailsScreen()
+	{
+		xpath = "(//*[text()[contains(.,'Service Number Allocation:')]]/./following::select)[1]";
+		numberAllocation = ta.getValueFromSelect(xpath);
+		
+		if(!numberAllocation.equals("Auto"))
+		{
+			passed = ta.selectBy(xpath, "Auto");
+			
+			xpath = "//input[@value='Deallocate']";
+			passed = ta.waitUntil(xpath, 5);
+		}
+		
+		xpath = "//input[@value='Find' and @disabled='disabled']";
+		if(!ta.elementExist(xpath)) 
+		{
+			xpath = "//input[@value='Find']";
+			passed = ta.clickOn(xpath);
+			
+			xpath = "//input[@value='Deallocate']";
+			passed = ta.waitUntil(xpath, 5);
+		}
+				
+		xpath = "(//*[text()[contains(.,'Service to be linked to ADSL/Other Service:')]]/./following::select)[1]";
+		
+		if(ta.elementExist(xpath))
+		{
+			if(ta.numberofElementsinSelect(xpath)>1)
+			{
+				passed = ta.selectBy(xpath, 1);
+			}
+			else
+			{
+				passed = false;
+				ta.log("ERROR : No DS/Other service available for allocation. Please re run the test with an accoung having DS or other Compatible service for IPTV");
+				return passed;
+			}
+		}		
+		
+		xpath = "(//*[text()[contains(.,'Same as Account Address:')]]/./following::input)[1]";
+		passed = ta.clickOn(xpath);
+		
+		xpath = "(//*[text()[contains(.,'Address Type:')]]/./following::select)[1]";
+		passed = ta.waitUntilElementnotExist(xpath, 5);
+		
+		//TODO Handle Mac Address 
+		
+		report.takeScreenshot();
+		
+		return passed;
+	}
+
 	
 	/**
 	 * @return
