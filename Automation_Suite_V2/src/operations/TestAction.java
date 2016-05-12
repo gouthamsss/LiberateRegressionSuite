@@ -26,7 +26,7 @@ import com.google.common.base.Predicate;
 
 public class TestAction 
 {
-//	static String ClassVersion = "TestAction Class 1.1.0 - Added methods to get and check values in select";
+	static String ClassVersion = "TestAction Class 1.1.0 - Added methods to get and check values in select";
 	
 	//Variable Declaration
 	WebDriver driver;				//Declare WebDriver
