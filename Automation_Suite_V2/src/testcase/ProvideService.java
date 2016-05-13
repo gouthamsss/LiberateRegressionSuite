@@ -22,7 +22,10 @@ public class ProvideService
     public String AddMore			= "";
     public boolean AddMoreFlow		= false;
     public boolean runningPDL 		= false;
+    public boolean comverseOne		= false;
+    public String comOneOffer		= "";
 
+    
     //Test Data
 	String AccountNumber	= "";
 	String department		= "BGSAL";
@@ -425,6 +428,21 @@ public class ProvideService
 				xpath = "//*[text()='No products selected']";
 				passed = ta.waitUntilElementnotExist(xpath, 3);
 			}
+			if(comverseOne)
+			{
+				xpath = "(//*[text()[contains(.,'Primary Offers:')]]/./following::select)[1]";
+				passed = ta.selectBy(xpath, comOneOffer);
+				
+				xpath = "//*[text()='Offer : "+comOneOffer+"']";
+				passed = ta.waitUntil(xpath, 5);
+				
+				xpath = "//input[@value = 'Select']";
+				passed = ta.clickOn(xpath);
+				
+				xpath = "//*[text()='Offer : "+comOneOffer+"']";
+				if(ta.elementExist(xpath))
+					passed = ta.waitUntilElementnotExist(xpath, 3);
+			}
 		}
 		
 		xpath = "//input[@value='Proceed']";
@@ -448,13 +466,16 @@ public class ProvideService
 		String email = ta.getDatafromPage(xpath);
 				
 		xpath = "(//*[text()[contains(.,'Email')]]/./following::input)[1]";
-		passed = ta.sendDatatoField(xpath, email);
+		if(ta.elementExist(xpath))
+			passed = ta.sendDatatoField(xpath, email);
 		
 		xpath = "(//*[text()[contains(.,'Email Address')]]/./following::select)[1]";
-		passed = ta.selectBy(xpath, 1);
+		if(ta.elementExist(xpath))
+			passed = ta.selectBy(xpath, 1);
 		
 		xpath = "(//*[text()[contains(.,'Password')]]/./following::input)[2]";
-		passed = ta.sendDatatoField(xpath, "A!2"+TestData.randomString());
+		if(ta.elementExist(xpath))
+			passed = ta.sendDatatoField(xpath, "A!2"+TestData.randomString());
 		
 		xpath = "//input[@value='Proceed']";
 		passed = ta.clickOn(xpath);
@@ -558,6 +579,7 @@ public class ProvideService
 			if(ta.numberofElementsinSelect(xpath)>1)
 			{
 				passed = ta.selectBy(xpath, 1);
+				ta.waitFor(1000);
 			}
 			else
 			{
@@ -567,15 +589,26 @@ public class ProvideService
 			}
 		}		
 		
-		xpath = "(//*[text()[contains(.,'Same as Account Address:')]]/./following::input)[1]";
-		passed = ta.clickOn(xpath);
-		
 		xpath = "(//*[text()[contains(.,'Address Type:')]]/./following::select)[1]";
-		passed = ta.waitUntilElementnotExist(xpath, 5);
+		if(ta.elementExist(xpath))
+		{
+			xpath = "(//*[text()[contains(.,'Same as Account Address:')]]/./following::input)[1]";
+			passed = ta.clickOn(xpath);
+			xpath = "(//*[text()[contains(.,'Address Type:')]]/./following::select)[1]";
+			passed = ta.waitUntilElementnotExist(xpath, 5);
+		}
 		
 		//TODO Handle Mac Address 
 		
 		report.takeScreenshot();
+		
+		xpath = "//input[@value='Proceed']";
+		passed = ta.clickOn(xpath);
+		
+		report.takeScreenshot();
+		
+		xpath = "(//*[text()[contains(.,'Service Number Allocation:')]]/./following::select)[1]";
+		passed = ta.waitUntilElementnotExist(xpath, 5);
 		
 		return passed;
 	}
