@@ -13,7 +13,7 @@ public class TestCase
 
 		TestReport report = new TestReport("PELExistingCustomer", "Reports\\");
 
-		ProvideService provideService = new ProvideService(report, "260003110000");
+		ProvideService provideService = new ProvideService(report, "240004430000");
 		provideService.ServiceType = "PEL";
 		provideService.ServicePackage = "ETFTESTING";
 		provideService.execute();
@@ -106,7 +106,7 @@ public class TestCase
 
 		TestReport report = new TestReport("PTIExisting", "Reports\\");
 
-		ProvideService provideService = new ProvideService(report, "230007730000");
+		ProvideService provideService = new ProvideService(report, "260000550000");
 		provideService.ServiceType = "PTI";
 		provideService.ServicePackage = "IPTVBasicS";
 		provideService.execute();
@@ -155,6 +155,33 @@ public class TestCase
 		providePDLService.execute();
 		
 		report.createScreenshotDocument();
+	}
+	
+	public static void PCLComverseExistingCustomer()
+	{
+		String BackUpEnvironment = MainClass.Environment;
+		String BackupAUTURL = MainClass.AUTURL;
+
+		
+		if(!MainClass.Environment.equals("S06"))
+		{						
+			MainClass.Environment	= "S06";
+			MainClass.AUTURL		= "http://172.21.73.80:8083/liberate-LONI02-S06/"; 
+		}
+		
+		LoginLogout.login(MainClass.AUTURL);
+
+		TestReport report = new TestReport("PCLComverseExistingCustomer", "Reports\\");
+		ProvideService provideService	= new ProvideService(report, "240004430000");
+		provideService.NewCustomer		= false;
+		provideService.ServiceType		= "PCL";
+		provideService.ServicePackage	= "LIME_PCL_Y";
+		provideService.comverseOne		= true;
+		provideService.comOneOffer		= "51";
+		provideService.execute();
+		
+		MainClass.Environment	= BackUpEnvironment;
+		MainClass.AUTURL		= BackupAUTURL;
 	}
 	
 	public void testCase()
