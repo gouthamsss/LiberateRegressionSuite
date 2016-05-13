@@ -26,7 +26,7 @@ import com.google.common.base.Predicate;
 
 public class TestAction 
 {
-	static String ClassVersion = "TestAction Class 1.1.0 - Added methods to get and check values in select";
+	static String ClassVersion = "TestAction Class 1.1.1 - Improvements in close OKpopup method";
 	
 	//Variable Declaration
 	WebDriver driver;				//Declare WebDriver
@@ -278,15 +278,16 @@ public class TestAction
 	//Closes a pop up with 'OK' button (by clicking on 'OK' button)
 	public boolean closeOKpopup()
 	{
-		String xpathforOK = "//input[contains (@value,'OK')]";
+		String xpathforOK = "(//input[@value='OK'])[last()]";
 		
 		try 
 		{
 			waitFor(500);
-			if (driver.findElements(By.xpath(xpathforOK)).size() != 0)
+			boolean OKButtonExists = driver.findElements(By.xpath(xpathforOK)).size() != 0; 
+			if (OKButtonExists)
 			{
 				driver.findElement(By.xpath(xpathforOK)).click();
-				waitUntilElementnotExist(xpathforOK, 5);
+				waitUntilElementnotExist(xpathforOK, 2);
 				passed = true;
 			}
 		} 
