@@ -223,13 +223,6 @@ public class CreateNewAccount
         	passed = ta.selectBy(xpath, CustomerType);
         }
 
-        xpath = "(//*[text()[contains(.,'Marketing Category:')]]/./following::select)[1]";
-        
-        if (ta.getValueFromSelect(xpath).equals("-- Select --"))
-        {
-        	passed = ta.selectBy(xpath, MarketingCategory);
-        }
-
         xpath = "(//*[text()[contains(.,'Region:')]]/./following::select)[1]";
         if (ta.getValueFromSelect(xpath).equals("-- Select --"))
         {
@@ -252,7 +245,14 @@ public class CreateNewAccount
             xpath = "(//*[text()[contains(.,'Bill Stats Area:')]]/./following::select)[1]";
             passed = ta.selectBy(xpath, BillStatusArea);
         }
-
+        
+        xpath = "(//*[text()[contains(.,'Marketing Category:')]]/./following::select)[1]";
+        
+        if (ta.getValueFromSelect(xpath).contains("Select"))
+        {
+        	passed = ta.selectBy(xpath, MarketingCategory);
+        }
+        
         //BILLING DETAILS
         xpath = "(//*[text()[contains(.,'Bill Frequency')]]/./following::select)[1]";
         if (ta.getValueFromSelect(xpath).equals("-- Select --"))
