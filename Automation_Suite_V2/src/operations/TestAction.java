@@ -26,7 +26,7 @@ import com.google.common.base.Predicate;
 
 public class TestAction 
 {
-	static String ClassVersion = "TestAction Class 1.1.1 - Improvements in close OKpopup method";
+	static String ClassVersion = "TestAction Class 1.1.2 - Improvements";
 	
 	//Variable Declaration
 	WebDriver driver;				//Declare WebDriver
@@ -210,7 +210,9 @@ public class TestAction
 				
 				WebElement option = select.getFirstSelectedOption();
 				selectedValue = option.getText();
-
+				
+				log(selectedValue);
+				
 				break;
 			}
 			catch(Exception e)
