@@ -10,10 +10,14 @@ import java.sql.Statement;
 
 public class TestData
 {
-	public static String testDataClassVersion = "TestData 0.1.4 : Added: Validate Data File";
+	public static String testDataClassVersion = "TestData 0.1.5 : Added: Build Number";
+	
+	public static String buildNumber;
 	
 	public static SecureRandom random	= new SecureRandom();
 	public static TestAction ta			= new TestAction(Operations.getdriver());
+	
+	
 	
 	//Save and Retrieve Data
 	public static boolean validateDBFile()
