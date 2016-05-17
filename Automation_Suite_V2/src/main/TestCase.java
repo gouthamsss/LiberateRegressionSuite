@@ -1,17 +1,21 @@
 package main;
 
+import operations.TestData;
 import operations.TestReport;
 import testcase.CreateNewAccount;
 import testcase.LoginLogout;
+import testcase.Payments;
 import testcase.ProvideService;
 
 public class TestCase 
 {
+	static String ReportLocation = "Reports\\"+TestData.buildNumber+"\\";
+	
 	public static void PELExistingCustomer()
 	{
 		LoginLogout.login(MainClass.AUTURL);
 
-		TestReport report = new TestReport("PELExistingCustomer", "Reports\\");
+		TestReport report = new TestReport("PELExistingCustomer", ReportLocation);
 
 		ProvideService provideService = new ProvideService(report, "240004430000");
 		provideService.ServiceType = "PEL";
@@ -25,7 +29,7 @@ public class TestCase
 	{
 		LoginLogout.login(MainClass.AUTURL);
 
-		TestReport report = new TestReport("PDLExistingCustomer", "Reports\\");
+		TestReport report = new TestReport("PDLExistingCustomer", ReportLocation);
 
 		ProvideService provideService = new ProvideService(report, "240004430000");
 		provideService.ServiceType = "PDL";
@@ -39,7 +43,7 @@ public class TestCase
 	{
 		LoginLogout.login(MainClass.AUTURL);
 
-		TestReport report = new TestReport("PELPDLNewCustomer", "Reports\\");
+		TestReport report = new TestReport("PELPDLNewCustomer", ReportLocation);
 		CreateNewAccount createNewAccount = new CreateNewAccount(report, "fixedResidential","ETFTESTING");
 		createNewAccount.ServiceType = "PEL";
 		createNewAccount.ServicePackage = "ETFTESTING";
@@ -59,7 +63,7 @@ public class TestCase
 	{
 		LoginLogout.login(MainClass.AUTURL);
 
-		TestReport report = new TestReport("PCLExistingCustomer", "Reports\\");
+		TestReport report = new TestReport("PCLExistingCustomer", ReportLocation);
 		ProvideService provideService = new ProvideService(report, "240004430000");
 		provideService.NewCustomer = false;
 		provideService.ServiceType = "PCL";
@@ -71,7 +75,7 @@ public class TestCase
 	{
 		LoginLogout.login(MainClass.AUTURL);
 
-		TestReport report = new TestReport("PCLNewCustomer", "Reports\\");
+		TestReport report = new TestReport("PCLNewCustomer", ReportLocation);
 		CreateNewAccount createNewAccount = new CreateNewAccount(report, "fixedResidential","PCL_Res");
 		createNewAccount.ServiceType = "PCL";
 		createNewAccount.ServicePackage = "PCL_Res";
@@ -90,7 +94,7 @@ public class TestCase
 	{
 		LoginLogout.login(MainClass.AUTURL);
 
-		TestReport report = new TestReport("PTVExisting", "Reports\\");
+		TestReport report = new TestReport("PTVExisting", ReportLocation);
 
 		ProvideService provideService = new ProvideService(report, "240004430000");
 		provideService.ServiceType = "PTV";
@@ -104,7 +108,7 @@ public class TestCase
 	{
 		LoginLogout.login(MainClass.AUTURL);
 
-		TestReport report = new TestReport("PTIExisting", "Reports\\");
+		TestReport report = new TestReport("PTIExisting", ReportLocation);
 
 		ProvideService provideService = new ProvideService(report, "260000550000");
 		provideService.ServiceType = "PTI";
@@ -118,7 +122,7 @@ public class TestCase
 	{
 		LoginLogout.login(MainClass.AUTURL);
 
-		TestReport report = new TestReport("PELAddMorePDL", "Reports\\");
+		TestReport report = new TestReport("PELAddMorePDL", ReportLocation);
 
 		ProvideService providePELService	= new ProvideService(report, "240004430000");
 		providePELService.ServiceType		= "PEL";
@@ -140,7 +144,7 @@ public class TestCase
 	{
 		LoginLogout.login(MainClass.AUTURL);
 
-		TestReport report = new TestReport("PELAddMorePDL", "Reports\\");
+		TestReport report = new TestReport("PELAddMorePDL", ReportLocation);
 
 		ProvideService providePELService	= new ProvideService(report, "240004430000");
 		providePELService.ServiceType		= "PEL";
@@ -171,7 +175,7 @@ public class TestCase
 		
 		LoginLogout.login(MainClass.AUTURL);
 
-		TestReport report = new TestReport("PCLComverseExistingCustomer", "Reports\\");
+		TestReport report = new TestReport("PCLComverseExistingCustomer", ReportLocation);
 		ProvideService provideService	= new ProvideService(report, "240004430000");
 		provideService.NewCustomer		= false;
 		provideService.ServiceType		= "PCL";
@@ -184,19 +188,37 @@ public class TestCase
 		MainClass.AUTURL		= BackupAUTURL;
 	}
 	
-	public void testCase()
+	public static void BatchPayment()
 	{
-		TestReport report = new TestReport("ProvideService", "Reports\\");
+		LoginLogout.login(MainClass.AUTURL);
+
+		TestReport report = new TestReport("BatchPayment", ReportLocation);
+		Payments payment = new Payments(report, "Batch");
+		payment.execute();
+		
+		report.createScreenshotDocument();
+	}
+	
+	public static void VerifyCashdrawer()
+	{
+		LoginLogout.login(MainClass.AUTURL);
+
+		TestReport report = new TestReport("VerifyCashdrawer", ReportLocation);
+		Payments payment = new Payments(report, "CashDrawer");
+		payment.execute();
+		
+		report.createScreenshotDocument();
+	}
+	
+	public static void testCase()
+	{
+		LoginLogout.login(MainClass.AUTURL);
+
+		TestReport report = new TestReport("ProvideService", ReportLocation);
 		CreateNewAccount createNewAccount = new CreateNewAccount(report, "fixedResidential","ETFTESTING");
 		createNewAccount.ServiceType = "PEL";
 		createNewAccount.ServicePackage = "ETFTESTING";
 		createNewAccount.execute();
-
-		ProvideService provideService = new ProvideService(report, createNewAccount.AccountNumber);
-		provideService.NewCustomer = true;
-		provideService.ServiceType = createNewAccount.ServiceType;
-		provideService.ServicePackage = createNewAccount.ServicePackage;
-		provideService.execute();
 		
 		report.createScreenshotDocument();
 	}
