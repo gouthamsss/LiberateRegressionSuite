@@ -90,6 +90,30 @@ public class TestCase
 		report.createScreenshotDocument();
 	}
 	
+	public static void PCLNewCustomerwithCreditLimit()
+	{
+		MainClass.AUTURL = "http://172.21.73.80:8081/liberate-LONI01-S10/";
+		MainClass.Environment = "S10";
+				
+		LoginLogout.login(MainClass.AUTURL);
+
+		TestReport report = new TestReport("PCLNewCustomer", ReportLocation);
+		CreateNewAccount createNewAccount = new CreateNewAccount(report, "fixedResidential","PCL_Res");
+		createNewAccount.ServiceType = "PCL";
+		createNewAccount.ServicePackage = "PCL_Res";
+		createNewAccount.execute();
+
+		ProvideService provideService = new ProvideService(report, createNewAccount.AccountNumber);
+		provideService.NewCustomer = true;
+		provideService.ServiceType = createNewAccount.ServiceType;
+		provideService.ServicePackage = createNewAccount.ServicePackage;
+		provideService.createCreditLimit = true;
+		provideService.execute();
+		
+		report.createScreenshotDocument();
+	}
+
+	
 	public static void PTVExisting()
 	{
 		LoginLogout.login(MainClass.AUTURL);
