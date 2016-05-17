@@ -23,6 +23,7 @@ public class ProvideService
     public boolean AddMoreFlow		= false;
     public boolean runningPDL 		= false;
     public boolean comverseOne		= false;
+    public boolean createCreditLimit= false;
     public String comOneOffer		= "";
 
     
@@ -34,6 +35,8 @@ public class ProvideService
     String PELNumberArea	= "BODD";
     String PCLExchange		= "MSCA";
     String PCLNumberArea	= "SMPO";
+    String CreditLimit		= "1200";
+    String CallLimit		= "1200";
     
     String salesAccNumber	= "";
     String salesServiceNum	= "";
@@ -625,7 +628,8 @@ public class ProvideService
 			passed = ta.selectBy(xpath, PELExchange);
 		
 			xpath = "(//*[text()[contains(.,'Number Area:')]]/./following::select[@disabled='disabled'])[1]";
-			passed = ta.waitUntilElementnotExist(xpath, 5);
+			if(ta.elementExist(xpath))
+				passed = ta.waitUntilElementnotExist(xpath, 5);
 		
 			xpath = "(//*[text()[contains(.,'Number Area:')]]/./following::select)[1]";
 			passed = ta.selectBy(xpath, PELNumberArea);
@@ -693,8 +697,9 @@ public class ProvideService
 		passed = ta.selectBy(xpath, PCLExchange);
 	
 		xpath = "(//*[text()[contains(.,'Number Area:')]]/./following::select[@disabled='disabled'])[1]";
-		passed = ta.waitUntilElementnotExist(xpath, 5);
-	
+		if(ta.elementExist(xpath))
+			passed = ta.waitUntilElementnotExist(xpath, 5);
+		
 		xpath = "(//*[text()[contains(.,'Number Area:')]]/./following::select)[1]";
 		passed = ta.selectBy(xpath, PCLNumberArea);
 		
@@ -736,6 +741,40 @@ public class ProvideService
 		
 		xpath = "(//*[text()[contains(.,'Address Type:')]]/./following::select)[1]";
 		passed = ta.waitUntilElementnotExist(xpath, 5);
+		
+		if(createCreditLimit)
+		{
+			xpath = "//*[text()[contains(.,'Billing Details')]]";
+			if(ta.elementExist(xpath))
+			{
+				xpath = "(//*[text()='Credit Limit:']/./following::input)[1]";
+				passed = ta.sendDatatoField(xpath, CreditLimit);
+				
+				xpath = "(//*[text()='Call Limit:']/./following::input)[1]";
+				passed = ta.sendDatatoField(xpath, CallLimit);
+				
+				xpath = "(//*[text()='Use Customer-Selected Credit Limit:']/./following::input)[1]";
+				passed = ta.clickOn(xpath);
+				
+				xpath = "(//*[text()='Customer-Selected Credit Limit:']/./following::input[@class='iceInpTxt-dis MandatoryTextBox-dis'])[1]";
+				if(ta.elementExist(xpath))
+					passed = ta.waitUntilElementnotExist(xpath, 5);
+				
+				xpath = "(//*[text()='Customer-Selected Credit Limit:']/./following::input)[1]";
+				passed = ta.sendDatatoField(xpath, CreditLimit);
+				
+				xpath = "(//*[text()='Customer-Selected Update Type:']/./following::select)[1]";
+				passed = ta.selectBy(xpath, 1);
+				
+				xpath = "(//*[text()='Customer-Selected Bar Type:']/./following::select)[1]";
+				passed = ta.selectBy(xpath, 1);
+			}
+			else
+			{
+				ta.log("ERROR : Not able to create credit limit. Please select a Post Paid service package");
+				return false;
+			}
+		}
 		
 		return passed;
 	}
