@@ -53,6 +53,8 @@ public class ProvideService
     String newScreenName = "";
     int sameScreenRetry	= 0;
 	
+    boolean provisioningCompleted = false;
+    
 	public ProvideService(TestReport report, String AccountNumber)
 	{
 		this.AccountNumber = AccountNumber;
@@ -67,24 +69,31 @@ public class ProvideService
 	    	passed = testStep_1();
 	        report.takeScreenshot();
 	        if (!passed)
+	        {
 	        	break;
-	        
+	        }	        
 	        passed = testStep_2();
 	        if (!passed)
+	        {
 	        	break;
-	        
+	        }	        
 	        passed = testStep_3();
 	        if(!passed)
+	        {
 	        	break;
-	        
+	        }
+	        if(provisioningCompleted)
+	        	break;
 	        passed = testStep_4();
 	        if(!passed)
+	        {
 	        	break;
-	        
+	        }	        
 	        passed = testStep_5();
 	        if(!passed)
+	        {
 	        	break;
-	        
+	        }
 		    break;
 	    }
 	}
@@ -157,6 +166,8 @@ public class ProvideService
 				xpath = "(//*[text()='Service Package:']/./following::select)[1]";
 				passed = ta.selectBy(xpath, ServicePackage);
 			}
+			
+			report.takeScreenshot();
 			
 			xpath = "//input[contains(@value,'Proceed')]";
 			passed = ta.clickOn(xpath);
@@ -297,6 +308,7 @@ public class ProvideService
 					this.ServicePackage	= "ADSL";
 					this.runningPDL		= true;
 					this.execute();
+					provisioningCompleted = true;
 				}
 			}
 		}
@@ -731,7 +743,7 @@ public class ProvideService
 		passed = ta.waitUntil(xpath, 5);
 		
 		xpath = "(//*[text()[contains(.,'SIM')]]/./following::select)[1]";
-		passed = ta.selectBy(xpath, 4);
+		passed = ta.selectBy(xpath, 5);
 		
 		xpath = "//*[text()='More Numbers exist matching the details entered']";
 		passed = ta.waitUntilElementnotExist(xpath, 5);

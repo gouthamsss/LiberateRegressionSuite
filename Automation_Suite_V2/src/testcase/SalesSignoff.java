@@ -29,7 +29,6 @@ public class SalesSignoff
 		passed = ta.waitUntil(xpath, 10);
 		
 		report.takeScreenshot();
-		
 		ta.closeOKpopup();
 		
 		xpath = "(//*[text()[contains(.,'Account Number:')]]/./following::*)[1]";

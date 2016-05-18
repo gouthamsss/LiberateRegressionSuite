@@ -1,5 +1,6 @@
 package testcase;
 
+import main.TestCase;
 import operations.Operations;
 import operations.TestAction;
 import operations.TestData;
@@ -50,6 +51,7 @@ public class LoginLogout
 				TestData.buildNumber = driver.findElement(By.xpath("(//span[contains(@id,'headerForm')])[5]")).getText();
 				TestData.buildNumber = TestData.buildNumber.substring(34, 37);
 				tsa.log("Current Build Number : " + TestData.buildNumber);
+				TestCase.ReportLocation = "Reports\\"+TestData.buildNumber+"\\";
 				//MainWindow.current_BuildNumber.setText(TestData.currentBuild);
 				
 				//Operations.initReportLocation();

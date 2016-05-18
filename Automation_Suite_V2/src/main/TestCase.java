@@ -1,6 +1,5 @@
 package main;
 
-import operations.TestData;
 import operations.TestReport;
 import testcase.CreateNewAccount;
 import testcase.LoginLogout;
@@ -9,7 +8,7 @@ import testcase.ProvideService;
 
 public class TestCase 
 {
-	static String ReportLocation = "Reports\\"+TestData.buildNumber+"\\";
+	public static String ReportLocation =  "Reports\\";// = "Reports\\"+TestData.buildNumber+"\\";
 	
 	public static void PELExistingCustomer()
 	{
@@ -21,7 +20,7 @@ public class TestCase
 		provideService.ServiceType = "PEL";
 		provideService.ServicePackage = "ETFTESTING";
 		provideService.execute();
-		
+//		ReportLocation = "Reports\\"+TestData.buildNumber+"\\";
 		report.createScreenshotDocument();
 	}
 	
@@ -35,7 +34,7 @@ public class TestCase
 		provideService.ServiceType = "PDL";
 		provideService.ServicePackage = "ADSL";
 		provideService.execute();
-		
+//		ReportLocation = "Reports\\"+TestData.buildNumber+"\\";
 		report.createScreenshotDocument();
 	}
 	
@@ -55,7 +54,7 @@ public class TestCase
 		provideService.ServiceType = createNewAccount.ServiceType;
 		provideService.ServicePackage = createNewAccount.ServicePackage;
 		provideService.execute();
-		
+//		ReportLocation = "Reports\\"+TestData.buildNumber+"\\";
 		report.createScreenshotDocument();
 	}
 	
@@ -69,6 +68,9 @@ public class TestCase
 		provideService.ServiceType = "PCL";
 		provideService.ServicePackage = "PCL_Res";
 		provideService.execute();
+		
+//		ReportLocation = "Reports\\"+TestData.buildNumber+"\\";
+		report.createScreenshotDocument();
 	}
 	
 	public static void PCLNewCustomer()
@@ -86,7 +88,7 @@ public class TestCase
 		provideService.ServiceType = createNewAccount.ServiceType;
 		provideService.ServicePackage = createNewAccount.ServicePackage;
 		provideService.execute();
-		
+//		ReportLocation = "Reports\\"+TestData.buildNumber+"\\";
 		report.createScreenshotDocument();
 	}
 	
@@ -97,7 +99,7 @@ public class TestCase
 				
 		LoginLogout.login(MainClass.AUTURL);
 
-		TestReport report = new TestReport("PCLNewCustomer", ReportLocation);
+		TestReport report = new TestReport("PCLNewCustomerwithCreditLimit", ReportLocation);
 		CreateNewAccount createNewAccount = new CreateNewAccount(report, "fixedResidential","PCL_Res");
 		createNewAccount.ServiceType = "PCL";
 		createNewAccount.ServicePackage = "PCL_Res";
@@ -109,7 +111,7 @@ public class TestCase
 		provideService.ServicePackage = createNewAccount.ServicePackage;
 		provideService.createCreditLimit = true;
 		provideService.execute();
-		
+//		ReportLocation = "Reports\\"+TestData.buildNumber+"\\";
 		report.createScreenshotDocument();
 	}
 
@@ -124,7 +126,7 @@ public class TestCase
 		provideService.ServiceType = "PTV";
 		provideService.ServicePackage = "PTV_RES";
 		provideService.execute();
-		
+//		ReportLocation = "Reports\\"+TestData.buildNumber+"\\";
 		report.createScreenshotDocument();
 	}
 	
@@ -138,7 +140,7 @@ public class TestCase
 		provideService.ServiceType = "PTI";
 		provideService.ServicePackage = "IPTVBasicS";
 		provideService.execute();
-		
+//		ReportLocation = "Reports\\"+TestData.buildNumber+"\\";
 		report.createScreenshotDocument();
 	}
 	
@@ -160,7 +162,7 @@ public class TestCase
 		providePDLService.AddMoreFlow		= true;
 		providePDLService.runningPDL		= true;
 		providePDLService.execute();
-		
+//		ReportLocation = "Reports\\"+TestData.buildNumber+"\\";
 		report.createScreenshotDocument();
 	}
 	
@@ -168,7 +170,7 @@ public class TestCase
 	{
 		LoginLogout.login(MainClass.AUTURL);
 
-		TestReport report = new TestReport("PELAddMorePDL", ReportLocation);
+		TestReport report = new TestReport("PELAddMorePCL", ReportLocation);
 
 		ProvideService providePELService	= new ProvideService(report, "240004430000");
 		providePELService.ServiceType		= "PEL";
@@ -181,7 +183,7 @@ public class TestCase
 		providePDLService.ServicePackage	= "PCL_Res";
 		providePDLService.AddMoreFlow		= true;
 		providePDLService.execute();
-		
+//		ReportLocation = "Reports\\"+TestData.buildNumber+"\\";
 		report.createScreenshotDocument();
 	}
 	
@@ -210,6 +212,9 @@ public class TestCase
 		
 		MainClass.Environment	= BackUpEnvironment;
 		MainClass.AUTURL		= BackupAUTURL;
+		
+//		ReportLocation = "Reports\\"+TestData.buildNumber+"\\";
+		report.createScreenshotDocument();
 	}
 	
 	public static void BatchPayment()
@@ -231,6 +236,7 @@ public class TestCase
 		Payments payment = new Payments(report, "CashDrawer");
 		payment.execute();
 		
+//		ReportLocation = "Reports\\"+TestData.buildNumber+"\\";
 		report.createScreenshotDocument();
 	}
 	
@@ -238,12 +244,13 @@ public class TestCase
 	{
 		LoginLogout.login(MainClass.AUTURL);
 
-		TestReport report = new TestReport("ProvideService", ReportLocation);
+		TestReport report = new TestReport("testCase", ReportLocation);
 		CreateNewAccount createNewAccount = new CreateNewAccount(report, "fixedResidential","ETFTESTING");
 		createNewAccount.ServiceType = "PEL";
 		createNewAccount.ServicePackage = "ETFTESTING";
 		createNewAccount.execute();
 		
+//		ReportLocation = "Reports\\"+TestData.buildNumber+"\\";
 		report.createScreenshotDocument();
 	}
 }

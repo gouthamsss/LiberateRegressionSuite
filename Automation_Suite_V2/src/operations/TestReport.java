@@ -64,6 +64,8 @@ public class TestReport
 	
 	private void createDocument()
 	{
+		createDirectory(reportLocation);
+		
 		XWPFDocument doc = new XWPFDocument();
 		String wordDoc = reportLocation + documentName;
 		int scrnCount = screenshotCount;
@@ -133,5 +135,22 @@ public class TestReport
 		//TODO add create screenshot document code
 	    
 	    screenshotCount = 0;
+	}
+	
+	private void createDirectory(String path)
+	{
+		File dir = new File(path);
+		
+		if (!dir.exists())
+		{
+			try
+			{
+				dir.mkdirs();
+		    } 
+		    catch(SecurityException se){
+		        //handle it
+		    }        
+		}
+
 	}
 }
