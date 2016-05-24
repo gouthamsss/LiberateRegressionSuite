@@ -18,11 +18,16 @@ public class Payments
 	int totalPayment		= numberOfPayments * 100;
 	String[] AccountNumbers = new String[numberOfPayments];
 	
+	public String AccountNumber	= "";
+	public String SinglePaymentType= "";
+	public String Amount			= "100.00";
 	TestReport report;
     TestAction ta 		= new TestAction(Operations.getdriver());
     
     boolean passed;
     String xpath;
+    String xpath_1;
+    String xpath_2;
     
     public Payments(TestReport report, String PaymentType)
     {
@@ -120,6 +125,11 @@ public class Payments
 			passed = doBatchPayment();
 		}
 		
+		else if (this.PaymentType.equalsIgnoreCase("SinglePayment"))
+		{
+			passed = doSinglePayment();
+		}
+		
 		return passed;
 	}
 	
@@ -193,6 +203,91 @@ public class Payments
 		return passed;
 	}
 
+	private boolean doSinglePayment()
+	{
+		xpath	= "//*[text()[contains(.,'Payments>> Payments>> Single Payment>>')]]";
+		passed	= ta.waitUntil(xpath, 4);
+		
+		xpath	= "//*[text()[contains(.,'Change the department to cashiers office')]]";
+		if(ta.elementExist(xpath))
+		{
+			passed = selectCashierOffice();
+		}
+		
+		xpath = "(//*[text()='Account Number:']/./following::input)[1]";
+		passed = ta.waitUntil(xpath, 5);
+		passed = ta.sendDatatoField(xpath, AccountNumber);
+		
+		xpath = "//input[@value = 'Search']";
+		passed = ta.clickOn(xpath);
+		
+		xpath = "(//*[text()='Account Number:']/./following::input[@disabled='true'])[1]";
+		passed = ta.waitUntil(xpath, 3);
+		
+		xpath = "(//*[text()='Payment Type:']/./following::select)[1]";
+		if(SinglePaymentType.equalsIgnoreCase("Standard"))
+		{
+			SinglePaymentType = "S";
+		}
+		else if(SinglePaymentType.equalsIgnoreCase("Deposit"))
+		{
+			SinglePaymentType = "D";
+		}
+		
+		passed = ta.selectBy(xpath, SinglePaymentType);
+		
+		xpath = "(//*[text()='Amount:']/./following::input)[1]";
+		passed = ta.clearInputField(xpath);
+		passed = ta.sendDatatoField(xpath, Amount);
+		
+		xpath = "//input[@value='Accept']";
+		passed = ta.clickOn(xpath);
+		
+		if(SinglePaymentType.equalsIgnoreCase("D"))
+		{
+			xpath_1 = "//*[text()[contains(.,'Deposits')]]";
+			xpath_2 = "//*[text()[contains(.,'There is no deposit requirement for this account.')]]";
+			passed = ta.waitUntil(xpath_1+"|"+xpath_2, 5);
+		
+			if(ta.elementExist(xpath_1))
+			{
+				//TODO proceed with payment
+				xpath = "(//*[text()='Amount Paid']/./following::input)[1]";
+				passed = ta.sendDatatoField(xpath, Amount);
+			}
+			else if (ta.elementExist(xpath_2))
+			{
+				ta.log("ERROR : Account number having no deposit requirement. Please raise a deposit requirement or select new account.");
+				return false;
+			}
+		}
+		
+		xpath = "//input[@value='Accept']";
+		passed = ta.waitUntil(xpath, 3);
+		passed = ta.clickOn(xpath);
+		
+		xpath = "//*[text()[contains(.,'Single payment updated successfully')]]";
+		passed = ta.waitUntil(xpath, 5);
+		
+		return passed;
+	}
+	
+	private boolean selectCashierOffice()
+	{
+		xpath = "//input[@value='Change']";
+		passed = ta.clickOn(xpath);
+		
+		xpath = "(//*[text()='Department:']/./following::select[@disabled='disabled'])[1]";
+		if(ta.elementExist(xpath))
+		{
+			passed = ta.waitUntilElementnotExist(xpath, 3);
+		}
+		
+		xpath = "(//*[text()='Department:']/./following::select)[1]";
+		passed = ta.selectBy(xpath, CashDrawer);
+		
+		return passed;
+	}
 	
 	private void populateAccountnumbers()
 	{
