@@ -1,7 +1,9 @@
 package main;
 
 import operations.TestReport;
+import testcase.CreateDepositReason;
 import testcase.CreateNewAccount;
+import testcase.CustomerSearch;
 import testcase.LoginLogout;
 import testcase.Payments;
 import testcase.ProvideService;
@@ -20,7 +22,6 @@ public class TestCase
 		provideService.ServiceType = "PEL";
 		provideService.ServicePackage = "ETFTESTING";
 		provideService.execute();
-//		ReportLocation = "Reports\\"+TestData.buildNumber+"\\";
 		report.createScreenshotDocument();
 	}
 	
@@ -34,7 +35,6 @@ public class TestCase
 		provideService.ServiceType = "PDL";
 		provideService.ServicePackage = "ADSL";
 		provideService.execute();
-//		ReportLocation = "Reports\\"+TestData.buildNumber+"\\";
 		report.createScreenshotDocument();
 	}
 	
@@ -54,7 +54,6 @@ public class TestCase
 		provideService.ServiceType = createNewAccount.ServiceType;
 		provideService.ServicePackage = createNewAccount.ServicePackage;
 		provideService.execute();
-//		ReportLocation = "Reports\\"+TestData.buildNumber+"\\";
 		report.createScreenshotDocument();
 	}
 	
@@ -69,7 +68,6 @@ public class TestCase
 		provideService.ServicePackage = "PCL_Res";
 		provideService.execute();
 		
-//		ReportLocation = "Reports\\"+TestData.buildNumber+"\\";
 		report.createScreenshotDocument();
 	}
 	
@@ -88,7 +86,6 @@ public class TestCase
 		provideService.ServiceType = createNewAccount.ServiceType;
 		provideService.ServicePackage = createNewAccount.ServicePackage;
 		provideService.execute();
-//		ReportLocation = "Reports\\"+TestData.buildNumber+"\\";
 		report.createScreenshotDocument();
 	}
 	
@@ -111,7 +108,6 @@ public class TestCase
 		provideService.ServicePackage = createNewAccount.ServicePackage;
 		provideService.createCreditLimit = true;
 		provideService.execute();
-//		ReportLocation = "Reports\\"+TestData.buildNumber+"\\";
 		report.createScreenshotDocument();
 	}
 
@@ -126,7 +122,6 @@ public class TestCase
 		provideService.ServiceType = "PTV";
 		provideService.ServicePackage = "PTV_RES";
 		provideService.execute();
-//		ReportLocation = "Reports\\"+TestData.buildNumber+"\\";
 		report.createScreenshotDocument();
 	}
 	
@@ -140,7 +135,6 @@ public class TestCase
 		provideService.ServiceType = "PTI";
 		provideService.ServicePackage = "IPTVBasicS";
 		provideService.execute();
-//		ReportLocation = "Reports\\"+TestData.buildNumber+"\\";
 		report.createScreenshotDocument();
 	}
 	
@@ -162,7 +156,6 @@ public class TestCase
 		providePDLService.AddMoreFlow		= true;
 		providePDLService.runningPDL		= true;
 		providePDLService.execute();
-//		ReportLocation = "Reports\\"+TestData.buildNumber+"\\";
 		report.createScreenshotDocument();
 	}
 	
@@ -183,7 +176,6 @@ public class TestCase
 		providePDLService.ServicePackage	= "PCL_Res";
 		providePDLService.AddMoreFlow		= true;
 		providePDLService.execute();
-//		ReportLocation = "Reports\\"+TestData.buildNumber+"\\";
 		report.createScreenshotDocument();
 	}
 	
@@ -213,7 +205,6 @@ public class TestCase
 		MainClass.Environment	= BackUpEnvironment;
 		MainClass.AUTURL		= BackupAUTURL;
 		
-//		ReportLocation = "Reports\\"+TestData.buildNumber+"\\";
 		report.createScreenshotDocument();
 	}
 	
@@ -249,7 +240,21 @@ public class TestCase
 		Payments payment = new Payments(report, "CashDrawer");
 		payment.execute();
 		
-//		ReportLocation = "Reports\\"+TestData.buildNumber+"\\";
+		report.createScreenshotDocument();
+	}
+	
+	public static void CreateDepositReason()
+	{
+		LoginLogout.login(MainClass.AUTURL);
+
+		TestReport report = new TestReport("CreateDepositReason", ReportLocation);
+		CustomerSearch customerSearch = new CustomerSearch(report);
+		customerSearch.AccountNumber = "240004430000";
+		customerSearch.execute();
+		
+		CreateDepositReason depositreason = new CreateDepositReason(report);
+		depositreason.execute();
+		
 		report.createScreenshotDocument();
 	}
 	
@@ -263,7 +268,6 @@ public class TestCase
 		createNewAccount.ServicePackage = "ETFTESTING";
 		createNewAccount.execute();
 		
-//		ReportLocation = "Reports\\"+TestData.buildNumber+"\\";
 		report.createScreenshotDocument();
 	}
 }
