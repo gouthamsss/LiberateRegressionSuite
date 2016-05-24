@@ -264,6 +264,7 @@ public class Payments
 		
 		xpath = "//input[@value='Accept']";
 		passed = ta.waitUntil(xpath, 3);
+		ta.waitFor(1000);
 		passed = ta.clickOn(xpath);
 		
 		xpath = "//*[text()[contains(.,'Single payment updated successfully')]]";
