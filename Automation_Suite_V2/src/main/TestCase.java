@@ -228,6 +228,19 @@ public class TestCase
 		report.createScreenshotDocument();
 	}
 	
+	public static void SinglePayment()
+	{
+		LoginLogout.login(MainClass.AUTURL);
+
+		TestReport report = new TestReport("SinglePayment", ReportLocation);
+		Payments payment = new Payments(report, "SinglePayment");
+		payment.AccountNumber = "210010230000";
+		payment.SinglePaymentType = "Standard";
+		payment.execute();
+		
+		report.createScreenshotDocument();
+	}
+	
 	public static void VerifyCashdrawer()
 	{
 		LoginLogout.login(MainClass.AUTURL);
