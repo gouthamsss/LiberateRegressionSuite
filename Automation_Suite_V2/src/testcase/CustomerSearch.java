@@ -11,6 +11,7 @@ public class CustomerSearch
 	public String ServiceOrderNumber;
 	public String LocalAccountNumber;
 	public Boolean onlyCustomerSearch = false;
+	
 	TestReport report;
     TestAction ta 		= new TestAction(Operations.getdriver());
 	
