@@ -252,7 +252,7 @@ public class TestCase
 		report.createScreenshotDocument();
 	}
 	
-	public static void CreateDepositReason()
+	public static void CreateRefundDepositReason()
 	{
 		LoginLogout.login(MainClass.AUTURL);
 
@@ -262,13 +262,20 @@ public class TestCase
 		customerSearch.AccountNumber 	= "240004430000";
 		customerSearch.execute();
 		
-		MaintainAccountDeposit depositreason = new MaintainAccountDeposit(report);
-		depositreason.execute();
+		MaintainAccountDeposit deposit = new MaintainAccountDeposit(report);
+		deposit.operation = "Create";
+		deposit.execute();
 		
 		Payments depositpayment			= new Payments(report, "SinglePayment");
 		depositpayment.AccountNumber	= customerSearch.AccountNumber;
 		depositpayment.SinglePaymentType= "Deposit";
 		depositpayment.execute();
+		
+		deposit.operation= "Refund";
+		
+		customerSearch.execute();
+		deposit.execute();
+
 		
 		report.createScreenshotDocument();
 	}
