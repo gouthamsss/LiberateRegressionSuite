@@ -240,7 +240,9 @@ public class Payments
 		
 		ta.waitFor(1000);
 		passed = ta.selectBy(xpath, SinglePaymentType);
-		
+
+		ta.waitFor(1000);
+
 		xpath = "(//*[text()='Amount:']/./following::input)[1]";
 		passed = ta.clearInputField(xpath);
 		passed = ta.sendDatatoField(xpath, Amount);
