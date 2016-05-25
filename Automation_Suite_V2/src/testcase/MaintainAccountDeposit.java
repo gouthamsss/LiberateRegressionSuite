@@ -12,6 +12,8 @@ public class MaintainAccountDeposit
 	TestReport report;
     TestAction ta 		= new TestAction(Operations.getdriver());
     
+    public String operation = "";
+    
     boolean passed;
     String xpath;
     
@@ -63,16 +65,55 @@ public class MaintainAccountDeposit
     	xpath = "//*[text()='Deposit Summary']";
     	passed = ta.waitUntil(xpath, 5);
     	
-    	xpath = "//*[text()='New']";
-    	passed = ta.waitUntil(xpath, 5);
-    	passed = ta.clickOn(xpath);
-    	
+    	if(operation.equalsIgnoreCase("Create"))
+    	{
+	    	xpath = "//*[text()='New']";
+	    	passed = ta.waitUntil(xpath, 5);
+	    	passed = ta.clickOn(xpath);
+    	}
+    	else if (operation.equalsIgnoreCase("Refund"))
+    	{
+    		//TODO Refund Deposit
+    	}
+    	else
+    	{
+    		ta.log("ERROR : Unknown operation '"+operation+"'. Please contact Support");
+    		return false;
+    	}
 		report.takeScreenshot();
     	
     	return passed;
     }
     
     private boolean testStep_3()
+    {
+    	if(operation.equalsIgnoreCase("Create"))
+    	{
+    		passed = createDepositeRequirement();
+    	}
+    	else if (operation.equalsIgnoreCase("Refund"))
+    	{
+    		passed = refundDeposit();  
+    	}
+    	else
+    	{
+    		ta.log("ERROR : Unknown operation '"+operation+"'. Please contact Support");
+    		return false;
+    	}
+    	
+    	return passed;
+    }
+    
+    private boolean testStep_4()
+    {
+
+		
+		ta.scrollUp();
+		
+    	return passed;
+    }
+    
+    private boolean createDepositeRequirement()
     {
     	xpath = "//*[text()='New Deposit Requirements']";
     	passed = ta.waitUntil(xpath, 5);
@@ -90,18 +131,62 @@ public class MaintainAccountDeposit
     	xpath = "//input[@value='OK']";
     	passed = ta.clickOn(xpath);
     	
-    	return passed;
-    }
-    
-    private boolean testStep_4()
-    {
     	xpath = "//*[text()='Deposit details added successfully']";
     	passed = ta.waitUntil(xpath, 5);
     	
 		report.takeScreenshot();
 		
-		ta.scrollUp();
-		
+    	return passed;
+    }
+    
+    private boolean refundDeposit()
+    {
+    	xpath = "//*[text()='Refund Deposit']";
+    	passed = ta.waitUntil(xpath, 5);
+    	passed = ta.clickOn(xpath);
+    	
+    	xpath = "//*[text()='Deposit Information']";
+    	passed = ta.waitUntil(xpath, 4);
+    	
+    	report.takeScreenshot();
+    	
+    	xpath = "(//td[contains(@class,'iceDatTblCol') and @scope='row'])[1]";
+    	passed = ta.clickOn(xpath);
+    	
+    	xpath = "//*[text()='Refund Method :']";
+    	passed = ta.waitUntil(xpath, 3);
+    	
+    	xpath = "(//*[text()='Service Charges']/./preceding::input)[last()]";
+    	passed = ta.clickOn(xpath);
+    	
+    	xpath = "//*[text()='Refund Amount:']";
+    	passed = ta.waitUntil(xpath, 4);
+    	
+    	xpath = "(//*[text()='Refund Amount:']/./following::input)[1]";
+    	if(ta.getAttribute(xpath, "value").equals("0.00")||ta.getAttribute(xpath, "value").equals(""))
+    	{
+    		ta.sendDatatoField(xpath, "1.00");
+    	}
+    	ta.waitFor(1000);
+    	
+    	report.takeScreenshot();
+    	
+    	xpath = "//input[@value='Apply']";
+    	passed = ta.clickOn(xpath);
+    	
+    	xpath = "//*[text()='Deposit refunded.']";
+    	passed = ta.waitUntil(xpath, 5);
+    	
+    	xpath = "//td[@class='buttonbg']";
+    	passed = ta.waitUntil(xpath, 2);
+    	passed = ta.clickOn(xpath);
+    	
+    	report.takeScreenshot();
+
+    	passed = ta.waitUntilElementnotExist(xpath, 4);
+    	
+    	report.takeScreenshot();
+    	
     	return passed;
     }
 }
