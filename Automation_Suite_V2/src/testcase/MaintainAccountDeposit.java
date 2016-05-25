@@ -4,7 +4,7 @@ import operations.Operations;
 import operations.TestAction;
 import operations.TestReport;
 
-public class CreateDepositReason
+public class MaintainAccountDeposit
 {
 	public String DepositAmount = "100.00";
 	String ReasonForDeposit = "";
@@ -15,7 +15,7 @@ public class CreateDepositReason
     boolean passed;
     String xpath;
     
-    public CreateDepositReason(TestReport report)
+    public MaintainAccountDeposit(TestReport report)
     {
     	this.report = report;
     }
@@ -53,6 +53,8 @@ public class CreateDepositReason
     	xpath = "//*[text()='Deposit Requirements']";
     	passed = ta.clickOn(xpath);
     	
+		report.takeScreenshot();
+    	
     	return passed;
     }
     
@@ -64,6 +66,8 @@ public class CreateDepositReason
     	xpath = "//*[text()='New']";
     	passed = ta.waitUntil(xpath, 5);
     	passed = ta.clickOn(xpath);
+    	
+		report.takeScreenshot();
     	
     	return passed;
     }
@@ -81,6 +85,8 @@ public class CreateDepositReason
     	passed = ta.clearInputField(xpath);
     	passed = ta.sendDatatoField(xpath, DepositAmount);
     	
+		report.takeScreenshot();
+
     	xpath = "//input[@value='OK']";
     	passed = ta.clickOn(xpath);
     	
@@ -92,6 +98,10 @@ public class CreateDepositReason
     	xpath = "//*[text()='Deposit details added successfully']";
     	passed = ta.waitUntil(xpath, 5);
     	
+		report.takeScreenshot();
+		
+		ta.scrollUp();
+		
     	return passed;
     }
 }
