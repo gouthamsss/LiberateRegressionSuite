@@ -78,6 +78,8 @@ public class CustomerSearch
 			return passed;
 		}
 		
+		report.takeScreenshot();
+		
 		xpath = "//input[@value='Search']";
 		passed = ta.clickOn(xpath);
 		
