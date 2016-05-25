@@ -218,12 +218,16 @@ public class Payments
 		passed = ta.waitUntil(xpath, 5);
 		passed = ta.sendDatatoField(xpath, AccountNumber);
 		
+		report.takeScreenshot();
+
 		xpath = "//input[@value = 'Search']";
 		passed = ta.clickOn(xpath);
 		
 		xpath = "(//*[text()='Account Number:']/./following::input[@disabled='true'])[1]";
 		passed = ta.waitUntil(xpath, 3);
-		
+
+		report.takeScreenshot();
+
 		xpath = "(//*[text()='Payment Type:']/./following::select)[1]";
 		if(SinglePaymentType.equalsIgnoreCase("Standard"))
 		{
@@ -234,12 +238,15 @@ public class Payments
 			SinglePaymentType = "D";
 		}
 		
+		ta.waitFor(1000);
 		passed = ta.selectBy(xpath, SinglePaymentType);
 		
 		xpath = "(//*[text()='Amount:']/./following::input)[1]";
 		passed = ta.clearInputField(xpath);
 		passed = ta.sendDatatoField(xpath, Amount);
 		
+		report.takeScreenshot();
+
 		xpath = "//input[@value='Accept']";
 		passed = ta.clickOn(xpath);
 		
@@ -254,10 +261,16 @@ public class Payments
 				//TODO proceed with payment
 				xpath = "(//*[text()='Amount Paid']/./following::input)[1]";
 				passed = ta.sendDatatoField(xpath, Amount);
+				
+				report.takeScreenshot();
+
 			}
 			else if (ta.elementExist(xpath_2))
 			{
 				ta.log("ERROR : Account number having no deposit requirement. Please raise a deposit requirement or select new account.");
+				
+				report.takeScreenshot();
+
 				return false;
 			}
 		}
@@ -267,9 +280,13 @@ public class Payments
 		ta.waitFor(1000);
 		passed = ta.clickOn(xpath);
 		
+		report.takeScreenshot();
+
 		xpath = "//*[text()[contains(.,'Single payment updated successfully')]]";
 		passed = ta.waitUntil(xpath, 5);
-		
+
+		report.takeScreenshot();
+
 		return passed;
 	}
 	
