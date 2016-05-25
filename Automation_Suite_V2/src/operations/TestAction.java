@@ -26,7 +26,7 @@ import com.google.common.base.Predicate;
 
 public class TestAction 
 {
-	static String ClassVersion = "TestAction Class 1.1.2 - Improvements";
+	static String ClassVersion = "TestAction Class 1.1.3 - Added : Get attibute method";
 	
 	//Variable Declaration
 	WebDriver driver;				//Declare WebDriver
@@ -224,6 +224,24 @@ public class TestAction
 		}
 		
 		return selectedValue;
+	}
+	
+	//get attribute value of provided attribute of a web
+	public String getAttribute(String xpathLocator, String attribute)
+	{
+		xpath = xpathLocator;
+		String attributevalue = "";
+		
+		try
+		{
+			attributevalue = driver.findElement(By.xpath(xpathLocator)).getAttribute(attribute);
+		}
+		catch(Exception e)
+		{
+			handleExcpetion(e);
+		}
+		
+		return attributevalue;
 	}
 	
 	//Check if a particular value is available in Select
