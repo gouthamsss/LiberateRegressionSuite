@@ -50,7 +50,7 @@ public class CreateNewAccount
     	SelectServicePackage 	= true;
     }
     
-    public  void execute()
+    public  boolean execute()
     {
     	//LoginLogout.login("http://172.21.73.80:8081/liberate-LONI01-S10/");
         LoginLogout.login(MainClass.AUTURL);
@@ -85,6 +85,7 @@ public class CreateNewAccount
             break;
         }
         //ta.closeSession();
+		return passed;
 	}
 
 	private  boolean testStep_1()

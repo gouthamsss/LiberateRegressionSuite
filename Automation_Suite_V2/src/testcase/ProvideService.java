@@ -62,7 +62,7 @@ public class ProvideService
 		sales 			= new SalesSignoff(this.report);
 	}
 	
-	public void execute()
+	public boolean execute()
 	{		
 	    while (true)
 	    {
@@ -96,6 +96,8 @@ public class ProvideService
 	        }
 		    break;
 	    }
+	    
+	    return passed;
 	}
 	
 	private boolean testStep_1()

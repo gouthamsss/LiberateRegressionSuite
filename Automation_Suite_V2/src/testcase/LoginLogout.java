@@ -27,8 +27,9 @@ public class LoginLogout
 		catch(UnreachableBrowserException e)
 		{
 			System.out.println("Unreachable Browser. Starting new chromedriver instance");
-			
+			driver = Operations.getdriver();
 			driver.get(autURL);
+			tsa = new TestAction(driver);
 			tsa.log("Navigating to '"+autURL+"'");
 		}
 		

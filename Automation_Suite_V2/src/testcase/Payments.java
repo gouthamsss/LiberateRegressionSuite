@@ -11,7 +11,7 @@ public class Payments
 	String CashDrawerS06	= "CASH";
 	String CashDrawerS10	= "CASH1";
 	String CashDrawer		= "";
-	String OpenDrawer		= "AQSAL";
+	String OpenDrawer		= "CASH2";
 	String PaymentType		= "";
 	
 	int numberOfPayments	= 3;
@@ -35,7 +35,7 @@ public class Payments
     	this.PaymentType= PaymentType;
     }
     
-    public void execute()
+    public boolean execute()
 	{		
 	    while (true)
 	    {
@@ -50,6 +50,7 @@ public class Payments
    	        	break;
 		    break;
 	    }
+		return passed;
 	}
 	
 	private boolean testStep_1()
