@@ -1,5 +1,6 @@
 package main;
 
+import operations.Operations;
 import operations.TestReport;
 import testcase.CreateNewAccount;
 import testcase.CustomerSearch;
@@ -8,10 +9,13 @@ import testcase.MaintainAccountDeposit;
 import testcase.Payments;
 import testcase.ProvideService;
 import testcase.Routing;
+import app_ui.TempMainWindow;
 
 public class TestCase 
 {
 	public static String ReportLocation =  "Reports\\";// = "Reports\\"+TestData.buildNumber+"\\";
+	
+	static Operations op = new Operations();
 	
 	public static void PELExistingCustomer()
 	{
@@ -22,7 +26,10 @@ public class TestCase
 		ProvideService provideService	= new ProvideService(report, "240004430000");
 		provideService.ServiceType		= "PEL";
 		provideService.ServicePackage	= "ETFTESTING";
-		provideService.execute();
+		
+		Boolean TestStatus = provideService.execute();
+		TempMainWindow.PELExistingCustomerStatus.setText(op.testStatus(TestStatus));
+		
 		report.createScreenshotDocument();
 	}
 	
@@ -35,7 +42,9 @@ public class TestCase
 		ProvideService provideService	= new ProvideService(report, "240004430000");
 		provideService.ServiceType		= "PDL";
 		provideService.ServicePackage	= "ADSL";
-		provideService.execute();
+		Boolean TestStatus = provideService.execute();
+		TempMainWindow.PDLExistingCustomerStatus.setText(op.testStatus(TestStatus));
+
 		report.createScreenshotDocument();
 	}
 	
@@ -48,14 +57,22 @@ public class TestCase
 		CreateNewAccount createNewAccount	= new CreateNewAccount(report, "fixedResidential","ETFTESTING");
 		createNewAccount.ServiceType		= "PEL";
 		createNewAccount.ServicePackage		= "ETFTESTING";
-		createNewAccount.execute();
-
+		Boolean TestStatus = createNewAccount.execute();
+		
+		if(TestStatus == false)
+		{
+			TempMainWindow.PELPDLNewCustomerStatus.setText(op.testStatus(TestStatus));
+			return;
+		}
+		
 		ProvideService provideService		= new ProvideService(report, createNewAccount.AccountNumber);
 		provideService.NewCustomer			= true;
 		provideService.PELPDLProvisioning	= true;
 		provideService.ServiceType			= createNewAccount.ServiceType;
 		provideService.ServicePackage		= createNewAccount.ServicePackage;
-		provideService.execute();
+		TestStatus = provideService.execute();
+		TempMainWindow.PELPDLNewCustomerStatus.setText(op.testStatus(TestStatus));
+
 		report.createScreenshotDocument();
 	}
 	
@@ -69,8 +86,9 @@ public class TestCase
 		provideService.NewCustomer		= false;
 		provideService.ServiceType		= "PCL";
 		provideService.ServicePackage	= "PCL_Res";
-		provideService.execute();
-		
+		Boolean TestStatus = provideService.execute();
+		TempMainWindow.PCLExistingCustomerStatus.setText(op.testStatus(TestStatus));
+
 		report.createScreenshotDocument();
 	}
 	
@@ -83,13 +101,20 @@ public class TestCase
 		CreateNewAccount createNewAccount	= new CreateNewAccount(report, "fixedResidential","PCL_Res");
 		createNewAccount.ServiceType		= "PCL";
 		createNewAccount.ServicePackage		= "PCL_Res";
-		createNewAccount.execute();
-
+		Boolean TestStatus = createNewAccount.execute();
+		if(TestStatus == false)
+		{
+			TempMainWindow.PCLNewCustomerStatus.setText(op.testStatus(TestStatus));
+			return;
+		}
+		
 		ProvideService provideService		= new ProvideService(report, createNewAccount.AccountNumber);
 		provideService.NewCustomer			= true;
 		provideService.ServiceType			= createNewAccount.ServiceType;
 		provideService.ServicePackage		= createNewAccount.ServicePackage;
-		provideService.execute();
+		TestStatus = provideService.execute();
+		TempMainWindow.PCLNewCustomerStatus.setText(op.testStatus(TestStatus));
+
 		report.createScreenshotDocument();
 	}
 	
@@ -105,14 +130,21 @@ public class TestCase
 		CreateNewAccount createNewAccount	= new CreateNewAccount(report, "fixedResidential","PCL_Res");
 		createNewAccount.ServiceType		= "PCL";
 		createNewAccount.ServicePackage		= "PCL_Res";
-		createNewAccount.execute();
-
+		Boolean TestStatus = createNewAccount.execute();
+		if(TestStatus == false)
+		{
+			TempMainWindow.PCLNewCustomerwithCreditLimitStatus.setText(op.testStatus(TestStatus));
+			return;
+		}
+		
 		ProvideService provideService		= new ProvideService(report, createNewAccount.AccountNumber);
 		provideService.NewCustomer			= true;
 		provideService.ServiceType			= createNewAccount.ServiceType;
 		provideService.ServicePackage		= createNewAccount.ServicePackage;
 		provideService.createCreditLimit	= true;
-		provideService.execute();
+		TestStatus = provideService.execute();
+		TempMainWindow.PCLNewCustomerwithCreditLimitStatus.setText(op.testStatus(TestStatus));
+
 		report.createScreenshotDocument();
 	}
 
@@ -126,7 +158,9 @@ public class TestCase
 		ProvideService provideService		= new ProvideService(report, "240004430000");
 		provideService.ServiceType			= "PTV";
 		provideService.ServicePackage		= "PTV_RES";
-		provideService.execute();
+		Boolean TestStatus = provideService.execute();
+		TempMainWindow.PTVExistingStatus.setText(op.testStatus(TestStatus));
+
 		report.createScreenshotDocument();
 	}
 	
@@ -139,7 +173,9 @@ public class TestCase
 		ProvideService provideService	= new ProvideService(report, "260000550000");
 		provideService.ServiceType		= "PTI";
 		provideService.ServicePackage	= "IPTVBasicS";
-		provideService.execute();
+		Boolean TestStatus = provideService.execute();
+		TempMainWindow.PTIExistingStatus.setText(op.testStatus(TestStatus));
+
 		report.createScreenshotDocument();
 	}
 	
@@ -153,14 +189,21 @@ public class TestCase
 		providePELService.ServiceType		= "PEL";
 		providePELService.ServicePackage	= "ETFTESTING";
 		providePELService.AddMore			= "PDL";
-		providePELService.execute();
+		Boolean TestStatus = providePELService.execute();
+		if(TestStatus == false)
+		{
+			TempMainWindow.PELAddMorePDLStatus.setText(op.testStatus(TestStatus));
+			return;
+		}
 		
 		ProvideService providePDLService	= new ProvideService(report, "240004430000");
 		providePDLService.ServiceType		= "PDL";
 		providePDLService.ServicePackage	= "ADSL";
 		providePDLService.AddMoreFlow		= true;
 		providePDLService.runningPDL		= true;
-		providePDLService.execute();
+		TestStatus = providePDLService.execute();
+		TempMainWindow.PELAddMorePDLStatus.setText(op.testStatus(TestStatus));
+
 		report.createScreenshotDocument();
 	}
 	
@@ -174,13 +217,20 @@ public class TestCase
 		providePELService.ServiceType		= "PEL";
 		providePELService.ServicePackage	= "ETFTESTING";
 		providePELService.AddMore			= "PCL";
-		providePELService.execute();
+		Boolean TestStatus = providePELService.execute();
+		if(TestStatus == false)
+		{
+			TempMainWindow.PELAddMorePCLStatus.setText(op.testStatus(TestStatus));
+			return;
+		}
 		
 		ProvideService providePDLService	= new ProvideService(report, "240004430000");
 		providePDLService.ServiceType		= "PCL";
 		providePDLService.ServicePackage	= "PCL_Res";
 		providePDLService.AddMoreFlow		= true;
-		providePDLService.execute();
+		TestStatus = providePDLService.execute();
+		TempMainWindow.PELAddMorePCLStatus.setText(op.testStatus(TestStatus));
+
 		report.createScreenshotDocument();
 	}
 	
@@ -206,8 +256,9 @@ public class TestCase
 		provideService.ServicePackage	= "LIME_PCL_Y";
 		provideService.comverseOne		= true;
 		provideService.comOneOffer		= "51";
-		provideService.execute();
-		
+		Boolean TestStatus = provideService.execute();
+		TempMainWindow.PCLComverseExistingCustomerStatus.setText(op.testStatus(TestStatus));
+
 		MainClass.Environment	= BackUpEnvironment;
 		MainClass.AUTURL		= BackupAUTURL;
 		
@@ -221,8 +272,9 @@ public class TestCase
 		TestReport report	= new TestReport("BatchPayment", ReportLocation);
 		
 		Payments payment	= new Payments(report, "Batch");
-		payment.execute();
-		
+		Boolean TestStatus = payment.execute();
+		TempMainWindow.BatchPaymentStatus.setText(op.testStatus(TestStatus));
+
 		report.createScreenshotDocument();
 	}
 	
@@ -235,8 +287,10 @@ public class TestCase
 		Payments payment			= new Payments(report, "SinglePayment");
 		payment.AccountNumber		= "210010230000";
 		payment.SinglePaymentType	= "Standard";
-		payment.execute();
-		
+		@SuppressWarnings("unused")
+		Boolean TestStatus = payment.execute();
+//		TODO TempMainWindow.SinglePayments.setText(op.testStatus(TestStatus));
+
 		report.createScreenshotDocument();
 	}
 	
@@ -247,8 +301,9 @@ public class TestCase
 		TestReport report	= new TestReport("VerifyCashdrawer", ReportLocation);
 		
 		Payments payment	= new Payments(report, "CashDrawer");
-		payment.execute();
-		
+		Boolean TestStatus = payment.execute();
+		TempMainWindow.VerifyCashdrawerStatus.setText(op.testStatus(TestStatus));
+
 		report.createScreenshotDocument();
 	}
 	
@@ -256,26 +311,47 @@ public class TestCase
 	{
 		LoginLogout.login(MainClass.AUTURL);
 
-		TestReport report 				= new TestReport("CreateDepositReason", ReportLocation);
+		TestReport report 				= new TestReport("CreateRefundDepositReason", ReportLocation);
 		
 		CustomerSearch customerSearch	= new CustomerSearch(report);
 		customerSearch.AccountNumber 	= "240004430000";
-		customerSearch.execute();
+		Boolean TestStatus = customerSearch.execute();
+		if(TestStatus == false)
+		{
+			TempMainWindow.CreateRefundDepositReasonStatus.setText(op.testStatus(TestStatus));
+			return;
+		}
 		
 		MaintainAccountDeposit deposit = new MaintainAccountDeposit(report);
 		deposit.operation = "Create";
-		deposit.execute();
+		TestStatus = deposit.execute();
+		if(TestStatus == false)
+		{
+			TempMainWindow.CreateRefundDepositReasonStatus.setText(op.testStatus(TestStatus));
+			return;
+		}
 		
 		Payments depositpayment			= new Payments(report, "SinglePayment");
 		depositpayment.AccountNumber	= customerSearch.AccountNumber;
 		depositpayment.SinglePaymentType= "Deposit";
-		depositpayment.execute();
+		TestStatus = depositpayment.execute();
+		if(TestStatus == false)
+		{
+			TempMainWindow.CreateRefundDepositReasonStatus.setText(op.testStatus(TestStatus));
+			return;
+		}
 		
 		deposit.operation= "Refund";
 		
-		customerSearch.execute();
-		deposit.execute();
-
+		TestStatus = customerSearch.execute();
+		if(TestStatus == false)
+		{
+			TempMainWindow.CreateRefundDepositReasonStatus.setText(op.testStatus(TestStatus));
+			return;
+		}
+		
+		TestStatus = deposit.execute();
+		TempMainWindow.CreateRefundDepositReasonStatus.setText(op.testStatus(TestStatus));
 		
 		report.createScreenshotDocument();
 	}
@@ -292,8 +368,9 @@ public class TestCase
 		routing.PlantItemType	= "FDP";
 		routing.PlantItemNum	= "FDP20";
 		routing.ExchnageID		= "BOT";
-		routing.execute();
-		
+		Boolean TestStatus = routing.execute();
+		TempMainWindow.FibreRoutingStatus.setText(op.testStatus(TestStatus));
+
 		report.createScreenshotDocument();
 	}
 	
