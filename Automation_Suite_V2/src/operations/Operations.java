@@ -51,4 +51,23 @@ public class Operations
 		return driver;
 	}
 	
+	public String testStatus(Boolean status)
+	{
+		String status1 = "";
+		if(status == true)
+			status1 = "Passed";
+		else if (status == false)
+			status1 = "Failed";
+		else
+			status1 = "ERROR : No Status";
+		return status1;
+	}
+	
+	public static void exitClose()
+	{
+		driver.close();
+		driver.quit();
+		driver = null;
+	}
+	
 }
