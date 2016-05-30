@@ -17,7 +17,8 @@ public class TestData
 	public static SecureRandom random	= new SecureRandom();
 	public static TestAction ta			= new TestAction(Operations.getdriver());
 	
-	
+	public static String S06_URL		= "http://172.21.73.80:8083/liberate-LONI02-S06/";
+	public static String S10_URL		= "http://172.21.73.80:8081/liberate-LONI01-S10/";
 	
 	//Save and Retrieve Data
 	public static boolean validateDBFile()
