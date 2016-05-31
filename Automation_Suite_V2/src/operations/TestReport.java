@@ -16,7 +16,7 @@ import com.sun.media.sound.InvalidFormatException;
 
 public class TestReport
 {
-	static String ClassVersion = "TestReport 1.0.0 : Removed : Access to main create document method";
+	static String ClassVersion = "TestReport 1.0.1 : Changed : Use log insted of printing to console";
 
 	String scenarioName;
 	String reportLocation;
@@ -24,6 +24,8 @@ public class TestReport
 	String documentName;
 	
 	static int screenshotCount = 0;
+	
+	TestAction ta = new TestAction(Operations.getdriver());
 	
 	public TestReport(String scenarioName, String reportLocation)
 	{
@@ -44,11 +46,11 @@ public class TestReport
 		}
 		catch (IOException e) 
 		{
-			System.out.println("Not able to save screenshot " + filename + " to " + location);
-			e.printStackTrace();
+			ta.log("Not able to save screenshot " + filename + " to " + location);
+			ta.log(e.getMessage());
 		}
 
-		System.out.println(" - Took Screenshot : " + filename);
+		ta.log(" - Took Screenshot : " + filename);
 	}
 	
 	public void createScreenshotDocument(String Document_Name)
@@ -131,7 +133,7 @@ public class TestReport
 			e.printStackTrace();
 		}
 		
-	    System.out.println("Created Document " + documentName + ".docx");
+	    ta.log("Created Document " + documentName + ".docx");
 		//TODO add create screenshot document code
 	    
 	    screenshotCount = 0;
