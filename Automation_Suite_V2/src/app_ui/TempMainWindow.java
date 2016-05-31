@@ -17,18 +17,17 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 import javax.swing.table.DefaultTableModel;
 
 import main.MainClass;
 import net.miginfocom.swing.MigLayout;
-import javax.swing.JTextPane;
-import javax.swing.JTextArea;
 
 public class TempMainWindow 
 {
-	public static String version = "0.0.1";
+	public static String version = "2.0.0.1";
 	
 	private JFrame frmRegressionSuiteV;
 	
@@ -282,9 +281,15 @@ public class TempMainWindow
 				"Selection", "Test Case", "Status", "Time Taken"
 			}
 		) {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
 			Class[] columnTypes = new Class[] {
 				Boolean.class, String.class, String.class, String.class
 			};
+			@SuppressWarnings({ "unchecked", "rawtypes" })
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
