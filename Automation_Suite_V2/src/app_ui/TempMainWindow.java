@@ -27,7 +27,7 @@ import net.miginfocom.swing.MigLayout;
 
 public class TempMainWindow 
 {
-	public static String version = "2.0.0.1";
+	public static String version = "2.0.0.2 : Log Improvements";
 	
 	private JFrame frmRegressionSuiteV;
 	
