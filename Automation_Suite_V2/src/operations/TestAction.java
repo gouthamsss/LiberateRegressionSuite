@@ -572,5 +572,6 @@ public class TestAction
 	{
 		String msg = sdf.format(new Date()) + " : " + message + "\n";
 		System.out.print(msg);
+		TestReport.writelog(message);
 	}
 }
