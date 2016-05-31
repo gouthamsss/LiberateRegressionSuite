@@ -22,7 +22,7 @@ import com.sun.media.sound.InvalidFormatException;
 
 public class TestReport
 {
-	static String ClassVersion = "TestReport 1.0.1 : Changed : Use log insted of printing to console";
+	static String ClassVersion = "TestReport 1.0.2 : Log file improvements";
 
 	String scenarioName;
 	String reportLocation;
@@ -165,14 +165,16 @@ public class TestReport
 	public static void writelog(String message)
 	{
 		String dir = "Log\\";
+		String filename = "TempLog.txt";
 		DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy");
 		Date date = new Date();
-		System.out.println(dateFormat.format(date));
+		filename = dir+dateFormat.format(date)+".txt";
 		
 		createDirectory(dir);
 		
-		File logfile = new File(dir+date.toString());
-		if(!logfile.exists())
+		File logfile = new File(filename);
+		boolean logfileexists = logfile.exists();
+		if(!logfileexists)
 		{
 			try
 			{
@@ -185,7 +187,7 @@ public class TestReport
 			}
 		}
 		
-		try(FileWriter fw = new FileWriter(dir, true);
+		try(FileWriter fw = new FileWriter(filename, true);
 			    BufferedWriter bw = new BufferedWriter(fw);
 			    PrintWriter out = new PrintWriter(bw))
 			{
@@ -193,6 +195,8 @@ public class TestReport
 			    //more code
 			} catch (IOException e) {
 			    //exception handling left as an exercise for the reader
+				System.out.println("Error writing to log");
+				e.printStackTrace();
 			}
 	}
 }
