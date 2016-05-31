@@ -1,16 +1,22 @@
 package operations;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
+import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.openqa.selenium.TakesScreenshot;
-import org.apache.poi.util.Units;
 
 import com.sun.media.sound.InvalidFormatException;
 
@@ -139,7 +145,7 @@ public class TestReport
 	    screenshotCount = 0;
 	}
 	
-	private void createDirectory(String path)
+	private static void createDirectory(String path)
 	{
 		File dir = new File(path);
 		
@@ -154,5 +160,39 @@ public class TestReport
 		    }        
 		}
 
+	}
+	
+	public static void writelog(String message)
+	{
+		String dir = "Log\\";
+		DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy");
+		Date date = new Date();
+		System.out.println(dateFormat.format(date));
+		
+		createDirectory(dir);
+		
+		File logfile = new File(dir+date.toString());
+		if(!logfile.exists())
+		{
+			try
+			{
+				logfile.createNewFile();
+			}
+			catch (IOException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		try(FileWriter fw = new FileWriter(dir, true);
+			    BufferedWriter bw = new BufferedWriter(fw);
+			    PrintWriter out = new PrintWriter(bw))
+			{
+			    out.println(message);
+			    //more code
+			} catch (IOException e) {
+			    //exception handling left as an exercise for the reader
+			}
 	}
 }
