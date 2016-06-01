@@ -8,6 +8,7 @@ import testcase.LoginLogout;
 import testcase.MaintainAccountDeposit;
 import testcase.Payments;
 import testcase.ProvideService;
+import testcase.QueryManagement;
 import testcase.Routing;
 import app_ui.TempMainWindow;
 
@@ -374,6 +375,17 @@ public class TestCase
 		report.createScreenshotDocument();
 	}
 	
+	public static void MaintainQuery()
+	{
+		LoginLogout.login(MainClass.AUTURL);
+
+		TestReport report = new TestReport("MaintainQuery", ReportLocation);
+		QueryManagement querymanagement = new QueryManagement(report);
+		querymanagement.execute();
+		
+		report.createScreenshotDocument();
+	}
+	
 	public static void testCase()
 	{
 		LoginLogout.login(MainClass.AUTURL);
@@ -386,4 +398,6 @@ public class TestCase
 		
 		report.createScreenshotDocument();
 	}
+	
+	
 }
