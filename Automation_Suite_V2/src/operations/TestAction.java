@@ -4,6 +4,7 @@ import java.awt.AWTException;
 import java.awt.Robot;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
@@ -25,7 +26,7 @@ import com.google.common.base.Predicate;
 
 public class TestAction 
 {
-	String actionClassVersion = "1.0.2 - Added : custom wait waitUntilSelectOptionLoaded";
+	static String ClassVersion = "TestAction Class 1.1.4 - Log file improvements";
 	
 	//Variable Declaration
 	WebDriver driver;				//Declare WebDriver
@@ -101,8 +102,22 @@ public class TestAction
 
 		String dataFromPage = "";
 		
-		log("Action - Getting value from : " + xpathLocator);
-		dataFromPage = driver.findElement(By.xpath(xpathLocator)).getText();
+		for(i = 0; i < retry; i++)
+		{
+			try
+			{
+				log("Action - Getting value from : " + xpathLocator);
+				dataFromPage = driver.findElement(By.xpath(xpathLocator)).getText();
+				log("Value	- '"+dataFromPage+"'");
+				break;
+			}
+			catch(Exception e)
+			{
+				handleExcpetion(e);
+				if (i == (retry-1))
+					passed = false;
+			}			
+		}
 		
 		return dataFromPage;
 	}
@@ -195,7 +210,9 @@ public class TestAction
 				
 				WebElement option = select.getFirstSelectedOption();
 				selectedValue = option.getText();
-
+				
+				log(selectedValue);
+				
 				break;
 			}
 			catch(Exception e)
@@ -207,6 +224,54 @@ public class TestAction
 		}
 		
 		return selectedValue;
+	}
+	
+	//get attribute value of provided attribute of a web
+	public String getAttribute(String xpathLocator, String attribute)
+	{
+		xpath = xpathLocator;
+		String attributevalue = "";
+		
+		try
+		{
+			attributevalue = driver.findElement(By.xpath(xpathLocator)).getAttribute(attribute);
+		}
+		catch(Exception e)
+		{
+			handleExcpetion(e);
+		}
+		
+		return attributevalue;
+	}
+	
+	//Check if a particular value is available in Select
+	public boolean checkElementinSelect(String xpathLocator, String ElementToFind)
+	{
+		
+		List <WebElement> selectValues = getAllfromSelect(xpathLocator);
+		
+		for(WebElement element: selectValues)
+		{
+			System.out.println(element.getText());
+			if(element.getText().contains(ElementToFind))
+			{
+				passed = true;
+				break;
+			}
+			else 
+			{
+				passed = false;
+			}
+		}
+				
+		return passed;
+	}
+	
+	public int numberofElementsinSelect(String xpathLocator)
+	{
+		List <WebElement> selectValues = getAllfromSelect(xpathLocator);
+		
+		return selectValues.size();
 	}
 	
 	//Wait until an element exist for long amount of time
@@ -231,23 +296,28 @@ public class TestAction
 	
 	//_____COMBO USER ACTION SECTION_____//
 	//Closes a pop up with 'OK' button (by clicking on 'OK' button)
-	public void closeOKpopup()
+	public boolean closeOKpopup()
 	{
-		String xpathforOK = "//input[contains (@value,'OK')]";
+		String xpathforOK = "(//input[@value='OK'])[last()]";
 		
 		try 
 		{
 			waitFor(500);
-			if (driver.findElements(By.xpath(xpathforOK)).size() != 0)
+			boolean OKButtonExists = driver.findElements(By.xpath(xpathforOK)).size() != 0; 
+			if (OKButtonExists)
 			{
-				clickOn(xpathforOK);
-				waitUntilElementnotExist(xpathforOK, 5);
+				driver.findElement(By.xpath(xpathforOK)).click();
+				waitUntilElementnotExist(xpathforOK, 2);
+				passed = true;
 			}
 		} 
 		catch (Exception e) 
 		{
 			handleExcpetion(e);
+			passed = false;
 		}
+		
+		return passed;
 	}
 	
 	//Closes a pop up with 'Yes' and 'No' button (by clicking on 'Yes' button)
@@ -260,7 +330,7 @@ public class TestAction
 			waitFor(500);
 			if (driver.findElements(By.xpath(xpathforYesNo)).size() != 0)
 			{
-				clickOn(xpathforYesNo);
+				driver.findElement(By.xpath(xpathforYesNo)).click();
 				waitUntilElementnotExist(xpathforYesNo, 5);
 			}
 			waitFor(500);
@@ -289,6 +359,8 @@ public class TestAction
 	//Wait until a particular Element disappears.	
 	public boolean waitUntilElementnotExist(String xpathLocator, int timetowait)
 	{
+		passed = true;
+		
 		xpath = xpathLocator;
 		waitPeriod = new WebDriverWait(driver, timetowait);
 		
@@ -302,7 +374,11 @@ public class TestAction
 			catch(TimeoutException e)
 			{
 				log("ERROR - TimeoutException Occured while looking for : '"+xpath+"'.");
-				passed = false;
+			}
+			finally
+			{
+				if(elementExist(xpathLocator))
+					passed = false;
 			}
 		}	
 		else
@@ -404,9 +480,19 @@ public class TestAction
 	//Check if an element Exists. True : Exists, False : Doesn't Exists
 	public boolean elementExist(String xpathLocator)
 	{
-		xpath = xpathLocator;
+		boolean exists;
 
-		return(driver.findElements(By.xpath(xpathLocator)).size() != 0);
+		log("Action : Checking availability of element '"+xpathLocator+"'");
+
+		xpath = xpathLocator;
+		exists = driver.findElements(By.xpath(xpathLocator)).size() != 0;
+		
+		if(exists)
+			log("Element Available");
+		else
+			log("Element is NOT Available");
+		
+		return exists;
 	}
 	
 	//move mouse to given location
@@ -472,10 +558,20 @@ public class TestAction
 		driver.quit();
 	}
 	
+	//Returns all element in a select by list
+	public List<WebElement> getAllfromSelect(String xpathLocator)
+	{
+        Select select = new Select(driver.findElement(By.xpath(xpathLocator)));
+        List <WebElement> elementcount = (List<WebElement>) select.getOptions();
+		
+		return elementcount;
+	}
+	
 	//Method to redirect console messages
 	public void log(String message)
 	{
-		String msg = "\n" + sdf.format(new Date()) + " : " + message;
+		String msg = sdf.format(new Date()) + " : " + message + "\n";
 		System.out.print(msg);
+		TestReport.writelog(msg);
 	}
 }

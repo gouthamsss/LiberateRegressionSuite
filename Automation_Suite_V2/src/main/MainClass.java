@@ -1,15 +1,21 @@
 package main;
 
-import testcase.ProvideService;
+import operations.TestData;
+
 
 public class MainClass
 {
+	public static String Environment 	= "S10";
+	public static String AUTURL			= "http://172.21.73.80:8083/liberate-LONI02-S06/";
+	
 	public static void main(String [] args)
 	{
-//		CreateNewAccount createNewAccount = new CreateNewAccount("fixedResidential","ETFTESTING");
-//		createNewAccount.execute();
+		TestData.validateDBFile();
 		
-		ProvideService provideService = new ProvideService(false);
-		provideService.execute();
+//		TestCase.PELExistingCustomer();
+//		TestCase.PDLExistingCustomer();
+//		TestCase.PELPDLNewCustomer();
+//		TestCase.PCLExistingCustomer();
+		TestCase.PCLNewCustomer();
 	}
 }

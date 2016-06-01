@@ -1,7 +1,9 @@
 package testcase;
 
+import main.TestCase;
 import operations.Operations;
 import operations.TestAction;
+import operations.TestData;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -20,12 +22,15 @@ public class LoginLogout
 		try
 		{
 			driver.get(autURL);
+			tsa.log("Navigating to '"+autURL+"'");
 		}
 		catch(UnreachableBrowserException e)
 		{
 			System.out.println("Unreachable Browser. Starting new chromedriver instance");
-			
+			driver = Operations.getdriver();
 			driver.get(autURL);
+			tsa = new TestAction(driver);
+			tsa.log("Navigating to '"+autURL+"'");
 		}
 		
 		boolean needToLogin = driver.findElements(By.id("login:userName")).size() != 0;
@@ -36,16 +41,18 @@ public class LoginLogout
 			driver.findElement(By.id("login:userName")).sendKeys("libadmin");
 			driver.findElement(By.id("login:userPassword")).sendKeys("Ic3cr34m!");	
 			driver.findElement(By.id("login:login_button")).click();
+			tsa.log("Loggin In");
 
 			xpath = "//*[text()[contains(.,'Logout')]]";
 			passed = tsa.waitUntil(xpath,30);
 			if(passed)
 			{
-				System.out.println("Logged in");
+				tsa.log("Logged in");
 				
-				//TestData.currentBuild = driver.findElement(By.xpath("(//span[contains(@id,'headerForm')])[5]")).getText();
-				//TestData.currentBuild = TestData.currentBuild.substring(34, 37);
-				
+				TestData.buildNumber = driver.findElement(By.xpath("(//span[contains(@id,'headerForm')])[5]")).getText();
+				TestData.buildNumber = TestData.buildNumber.substring(34, 37);
+				tsa.log("Current Build Number : " + TestData.buildNumber);
+				TestCase.ReportLocation = "Reports\\"+TestData.buildNumber+"\\";
 				//MainWindow.current_BuildNumber.setText(TestData.currentBuild);
 				
 				//Operations.initReportLocation();

@@ -1,22 +1,28 @@
 package operations;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
+import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.openqa.selenium.TakesScreenshot;
-import org.apache.poi.util.Units;
 
 import com.sun.media.sound.InvalidFormatException;
 
 public class TestReport
 {
-	String TestReportClassVersion = "0.1.1 : Amended : screenshotCount to static";
+	static String ClassVersion = "TestReport 1.0.2 : Log file improvements";
 
 	String scenarioName;
 	String reportLocation;
@@ -24,6 +30,8 @@ public class TestReport
 	String documentName;
 	
 	static int screenshotCount = 0;
+	
+	TestAction ta = new TestAction(Operations.getdriver());
 	
 	public TestReport(String scenarioName, String reportLocation)
 	{
@@ -44,11 +52,11 @@ public class TestReport
 		}
 		catch (IOException e) 
 		{
-			System.out.println("Not able to save screenshot " + filename + " to " + location);
-			e.printStackTrace();
+			ta.log("Not able to save screenshot " + filename + " to " + location);
+			ta.log(e.getMessage());
 		}
 
-		System.out.println(" - Took Screenshot : " + filename);
+		ta.log(" - Took Screenshot : " + filename);
 	}
 	
 	public void createScreenshotDocument(String Document_Name)
@@ -62,8 +70,10 @@ public class TestReport
 		createDocument();
 	}
 	
-	public void createDocument()
+	private void createDocument()
 	{
+		createDirectory(reportLocation);
+		
 		XWPFDocument doc = new XWPFDocument();
 		String wordDoc = reportLocation + documentName;
 		int scrnCount = screenshotCount;
@@ -129,9 +139,64 @@ public class TestReport
 			e.printStackTrace();
 		}
 		
-	    System.out.println("Created Document " + documentName + ".docx");
+	    ta.log("Created Document " + documentName + ".docx");
 		//TODO add create screenshot document code
 	    
 	    screenshotCount = 0;
+	}
+	
+	private static void createDirectory(String path)
+	{
+		File dir = new File(path);
+		
+		if (!dir.exists())
+		{
+			try
+			{
+				dir.mkdirs();
+		    } 
+		    catch(SecurityException se){
+		        //handle it
+		    }        
+		}
+
+	}
+	
+	public static void writelog(String message)
+	{
+		String dir = "Log\\";
+		String filename = "TempLog.txt";
+		DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy");
+		Date date = new Date();
+		filename = dir+dateFormat.format(date)+".txt";
+		
+		createDirectory(dir);
+		
+		File logfile = new File(filename);
+		boolean logfileexists = logfile.exists();
+		if(!logfileexists)
+		{
+			try
+			{
+				logfile.createNewFile();
+			}
+			catch (IOException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		try(FileWriter fw = new FileWriter(filename, true);
+			    BufferedWriter bw = new BufferedWriter(fw);
+			    PrintWriter out = new PrintWriter(bw))
+			{
+			    out.println(message);
+			    //more code
+			} catch (IOException e) {
+			    //exception handling left as an exercise for the reader
+				System.out.println("Error writing to log");
+				e.printStackTrace();
+			}
 	}
 }
