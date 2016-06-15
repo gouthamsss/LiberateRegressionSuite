@@ -10,8 +10,9 @@ public class TestConfiguration
 	}
 	
 	//TODO REMOVE STUBS
-	public static boolean stubFillProductFields()
+	public static boolean stubFillProductFields(TestAction ta2)
 	{
+		ta = ta2;
 		boolean passed = false;
 		String xpath;
 		

@@ -515,7 +515,7 @@ public class ProvideService
 		{
 			//TODO If mandatory fields exist. Fill them
 			ta.log("Mandatory Fields Exists. Calling stub");
-			TestConfiguration.stubFillProductFields();
+			TestConfiguration.stubFillProductFields(ta);
 		}
 		
 		xpath = "//input[@value='Proceed']";
