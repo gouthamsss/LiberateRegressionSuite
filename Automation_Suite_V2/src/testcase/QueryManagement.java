@@ -23,7 +23,9 @@ public class QueryManagement
 	    	passed = testStep_1();
 	        if (!passed)
 	        	break;
-	        
+	    	passed = testStep_2();
+	        if (!passed)
+	        	break;
 	        
 	        
     		break;

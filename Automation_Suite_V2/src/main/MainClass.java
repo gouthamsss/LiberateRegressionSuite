@@ -2,7 +2,7 @@ package main;
 
 import operations.Operations;
 import operations.TestData;
-import app_ui.TempMainWindow;
+import app_ui.MainWindow;
 
 
 public class MainClass implements Runnable
@@ -14,7 +14,7 @@ public class MainClass implements Runnable
 	
 	public static void main(String [] args)
 	{
-		int urlSelected = TempMainWindow.AUTSelection.getSelectedIndex();
+		int urlSelected = MainWindow.AUTSelection.getSelectedIndex();
 		
 		if (urlSelected == 0)
 		{
@@ -29,35 +29,35 @@ public class MainClass implements Runnable
 		
 		TestData.validateDBFile();
 		
-		if(TempMainWindow.PELExistingCustomer.isSelected())
+		if(MainWindow.PELExistingCustomer.isSelected())
 			TestCase.PELExistingCustomer();
-		if(TempMainWindow.PDLExistingCustomer.isSelected())
+		if(MainWindow.PDLExistingCustomer.isSelected())
 			TestCase.PDLExistingCustomer();
-		if(TempMainWindow.PELPDLNewCustomer.isSelected())
+		if(MainWindow.PELPDLNewCustomer.isSelected())
 			TestCase.PELPDLNewCustomer();
-		if(TempMainWindow.PCLExistingCustomer.isSelected())
+		if(MainWindow.PCLExistingCustomer.isSelected())
 			TestCase.PCLExistingCustomer();
-		if(TempMainWindow.PCLNewCustomer.isSelected())
+		if(MainWindow.PCLNewCustomer.isSelected())
 			TestCase.PCLNewCustomer();
-		if(TempMainWindow.PCLNewCustomerwithCreditLimit.isSelected())
+		if(MainWindow.PCLNewCustomerwithCreditLimit.isSelected())
 			TestCase.PCLNewCustomerwithCreditLimit();
-		if(TempMainWindow.PTVExisting.isSelected())
+		if(MainWindow.PTVExisting.isSelected())
 			TestCase.PTVExisting();
-		if(TempMainWindow.PELAddMorePDL.isSelected())
+		if(MainWindow.PELAddMorePDL.isSelected())
 			TestCase.PELAddMorePDL();
-		if(TempMainWindow.PELAddMorePCL.isSelected())
+		if(MainWindow.PELAddMorePCL.isSelected())
 			TestCase.PELAddMorePCL();
-		if(TempMainWindow.PTIExisting.isSelected())
+		if(MainWindow.PTIExisting.isSelected())
 			TestCase.PTIExisting();
-		if(TempMainWindow.PCLComverseExistingCustomer.isSelected())
+		if(MainWindow.PCLComverseExistingCustomer.isSelected())
 			TestCase.PCLComverseExistingCustomer();
-		if(TempMainWindow.BatchPayment.isSelected())
+		if(MainWindow.BatchPayment.isSelected())
 			TestCase.BatchPayment();
-		if(TempMainWindow.CreateRefundDepositReason.isSelected())
+		if(MainWindow.CreateRefundDepositReason.isSelected())
 			TestCase.CreateRefundDepositReason();
-		if(TempMainWindow.VerifyCashdrawer.isSelected())
+		if(MainWindow.VerifyCashdrawer.isSelected())
 			TestCase.VerifyCashdrawer();
-		if(TempMainWindow.FibreRouting.isSelected())
+		if(MainWindow.FibreRouting.isSelected())
 			TestCase.FibreRouting();
 	
 		Operations.exitClose();

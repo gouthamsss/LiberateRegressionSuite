@@ -10,7 +10,7 @@ import testcase.Payments;
 import testcase.ProvideService;
 import testcase.QueryManagement;
 import testcase.Routing;
-import app_ui.TempMainWindow;
+import app_ui.MainWindow;
 
 public class TestCase 
 {
@@ -29,7 +29,7 @@ public class TestCase
 		provideService.ServicePackage	= "ETFTESTING";
 		
 		Boolean TestStatus = provideService.execute();
-		TempMainWindow.PELExistingCustomerStatus.setText(op.testStatus(TestStatus));
+		MainWindow.PELExistingCustomerStatus.setText(op.testStatus(TestStatus));
 		
 		report.createScreenshotDocument();
 	}
@@ -44,7 +44,7 @@ public class TestCase
 		provideService.ServiceType		= "PDL";
 		provideService.ServicePackage	= "ADSL";
 		Boolean TestStatus = provideService.execute();
-		TempMainWindow.PDLExistingCustomerStatus.setText(op.testStatus(TestStatus));
+		MainWindow.PDLExistingCustomerStatus.setText(op.testStatus(TestStatus));
 
 		report.createScreenshotDocument();
 	}
@@ -62,7 +62,7 @@ public class TestCase
 		
 		if(TestStatus == false)
 		{
-			TempMainWindow.PELPDLNewCustomerStatus.setText(op.testStatus(TestStatus));
+			MainWindow.PELPDLNewCustomerStatus.setText(op.testStatus(TestStatus));
 			return;
 		}
 		
@@ -72,7 +72,7 @@ public class TestCase
 		provideService.ServiceType			= createNewAccount.ServiceType;
 		provideService.ServicePackage		= createNewAccount.ServicePackage;
 		TestStatus = provideService.execute();
-		TempMainWindow.PELPDLNewCustomerStatus.setText(op.testStatus(TestStatus));
+		MainWindow.PELPDLNewCustomerStatus.setText(op.testStatus(TestStatus));
 
 		report.createScreenshotDocument();
 	}
@@ -88,7 +88,7 @@ public class TestCase
 		provideService.ServiceType		= "PCL";
 		provideService.ServicePackage	= "PCL_Res";
 		Boolean TestStatus = provideService.execute();
-		TempMainWindow.PCLExistingCustomerStatus.setText(op.testStatus(TestStatus));
+		MainWindow.PCLExistingCustomerStatus.setText(op.testStatus(TestStatus));
 
 		report.createScreenshotDocument();
 	}
@@ -105,7 +105,7 @@ public class TestCase
 		Boolean TestStatus = createNewAccount.execute();
 		if(TestStatus == false)
 		{
-			TempMainWindow.PCLNewCustomerStatus.setText(op.testStatus(TestStatus));
+			MainWindow.PCLNewCustomerStatus.setText(op.testStatus(TestStatus));
 			return;
 		}
 		
@@ -114,7 +114,7 @@ public class TestCase
 		provideService.ServiceType			= createNewAccount.ServiceType;
 		provideService.ServicePackage		= createNewAccount.ServicePackage;
 		TestStatus = provideService.execute();
-		TempMainWindow.PCLNewCustomerStatus.setText(op.testStatus(TestStatus));
+		MainWindow.PCLNewCustomerStatus.setText(op.testStatus(TestStatus));
 
 		report.createScreenshotDocument();
 	}
@@ -134,7 +134,7 @@ public class TestCase
 		Boolean TestStatus = createNewAccount.execute();
 		if(TestStatus == false)
 		{
-			TempMainWindow.PCLNewCustomerwithCreditLimitStatus.setText(op.testStatus(TestStatus));
+			MainWindow.PCLNewCustomerwithCreditLimitStatus.setText(op.testStatus(TestStatus));
 			return;
 		}
 		
@@ -144,7 +144,7 @@ public class TestCase
 		provideService.ServicePackage		= createNewAccount.ServicePackage;
 		provideService.createCreditLimit	= true;
 		TestStatus = provideService.execute();
-		TempMainWindow.PCLNewCustomerwithCreditLimitStatus.setText(op.testStatus(TestStatus));
+		MainWindow.PCLNewCustomerwithCreditLimitStatus.setText(op.testStatus(TestStatus));
 
 		report.createScreenshotDocument();
 	}
@@ -160,7 +160,7 @@ public class TestCase
 		provideService.ServiceType			= "PTV";
 		provideService.ServicePackage		= "PTV_RES";
 		Boolean TestStatus = provideService.execute();
-		TempMainWindow.PTVExistingStatus.setText(op.testStatus(TestStatus));
+		MainWindow.PTVExistingStatus.setText(op.testStatus(TestStatus));
 
 		report.createScreenshotDocument();
 	}
@@ -175,7 +175,7 @@ public class TestCase
 		provideService.ServiceType		= "PTI";
 		provideService.ServicePackage	= "IPTVBasicS";
 		Boolean TestStatus = provideService.execute();
-		TempMainWindow.PTIExistingStatus.setText(op.testStatus(TestStatus));
+		MainWindow.PTIExistingStatus.setText(op.testStatus(TestStatus));
 
 		report.createScreenshotDocument();
 	}
@@ -193,7 +193,7 @@ public class TestCase
 		Boolean TestStatus = providePELService.execute();
 		if(TestStatus == false)
 		{
-			TempMainWindow.PELAddMorePDLStatus.setText(op.testStatus(TestStatus));
+			MainWindow.PELAddMorePDLStatus.setText(op.testStatus(TestStatus));
 			return;
 		}
 		
@@ -203,7 +203,7 @@ public class TestCase
 		providePDLService.AddMoreFlow		= true;
 		providePDLService.runningPDL		= true;
 		TestStatus = providePDLService.execute();
-		TempMainWindow.PELAddMorePDLStatus.setText(op.testStatus(TestStatus));
+		MainWindow.PELAddMorePDLStatus.setText(op.testStatus(TestStatus));
 
 		report.createScreenshotDocument();
 	}
@@ -221,7 +221,7 @@ public class TestCase
 		Boolean TestStatus = providePELService.execute();
 		if(TestStatus == false)
 		{
-			TempMainWindow.PELAddMorePCLStatus.setText(op.testStatus(TestStatus));
+			MainWindow.PELAddMorePCLStatus.setText(op.testStatus(TestStatus));
 			return;
 		}
 		
@@ -230,7 +230,7 @@ public class TestCase
 		providePDLService.ServicePackage	= "PCL_Res";
 		providePDLService.AddMoreFlow		= true;
 		TestStatus = providePDLService.execute();
-		TempMainWindow.PELAddMorePCLStatus.setText(op.testStatus(TestStatus));
+		MainWindow.PELAddMorePCLStatus.setText(op.testStatus(TestStatus));
 
 		report.createScreenshotDocument();
 	}
@@ -258,7 +258,7 @@ public class TestCase
 		provideService.comverseOne		= true;
 		provideService.comOneOffer		= "51";
 		Boolean TestStatus = provideService.execute();
-		TempMainWindow.PCLComverseExistingCustomerStatus.setText(op.testStatus(TestStatus));
+		MainWindow.PCLComverseExistingCustomerStatus.setText(op.testStatus(TestStatus));
 
 		MainClass.Environment	= BackUpEnvironment;
 		MainClass.AUTURL		= BackupAUTURL;
@@ -274,7 +274,7 @@ public class TestCase
 		
 		Payments payment	= new Payments(report, "Batch");
 		Boolean TestStatus = payment.execute();
-		TempMainWindow.BatchPaymentStatus.setText(op.testStatus(TestStatus));
+		MainWindow.BatchPaymentStatus.setText(op.testStatus(TestStatus));
 
 		report.createScreenshotDocument();
 	}
@@ -303,7 +303,7 @@ public class TestCase
 		
 		Payments payment	= new Payments(report, "CashDrawer");
 		Boolean TestStatus = payment.execute();
-		TempMainWindow.VerifyCashdrawerStatus.setText(op.testStatus(TestStatus));
+		MainWindow.VerifyCashdrawerStatus.setText(op.testStatus(TestStatus));
 
 		report.createScreenshotDocument();
 	}
@@ -319,7 +319,7 @@ public class TestCase
 		Boolean TestStatus = customerSearch.execute();
 		if(TestStatus == false)
 		{
-			TempMainWindow.CreateRefundDepositReasonStatus.setText(op.testStatus(TestStatus));
+			MainWindow.CreateRefundDepositReasonStatus.setText(op.testStatus(TestStatus));
 			return;
 		}
 		
@@ -328,7 +328,7 @@ public class TestCase
 		TestStatus = deposit.execute();
 		if(TestStatus == false)
 		{
-			TempMainWindow.CreateRefundDepositReasonStatus.setText(op.testStatus(TestStatus));
+			MainWindow.CreateRefundDepositReasonStatus.setText(op.testStatus(TestStatus));
 			return;
 		}
 		
@@ -338,7 +338,7 @@ public class TestCase
 		TestStatus = depositpayment.execute();
 		if(TestStatus == false)
 		{
-			TempMainWindow.CreateRefundDepositReasonStatus.setText(op.testStatus(TestStatus));
+			MainWindow.CreateRefundDepositReasonStatus.setText(op.testStatus(TestStatus));
 			return;
 		}
 		
@@ -347,12 +347,12 @@ public class TestCase
 		TestStatus = customerSearch.execute();
 		if(TestStatus == false)
 		{
-			TempMainWindow.CreateRefundDepositReasonStatus.setText(op.testStatus(TestStatus));
+			MainWindow.CreateRefundDepositReasonStatus.setText(op.testStatus(TestStatus));
 			return;
 		}
 		
 		TestStatus = deposit.execute();
-		TempMainWindow.CreateRefundDepositReasonStatus.setText(op.testStatus(TestStatus));
+		MainWindow.CreateRefundDepositReasonStatus.setText(op.testStatus(TestStatus));
 		
 		report.createScreenshotDocument();
 	}
@@ -370,7 +370,7 @@ public class TestCase
 		routing.PlantItemNum	= "FDP20";
 		routing.ExchnageID		= "BOT";
 		Boolean TestStatus = routing.execute();
-		TempMainWindow.FibreRoutingStatus.setText(op.testStatus(TestStatus));
+		MainWindow.FibreRoutingStatus.setText(op.testStatus(TestStatus));
 
 		report.createScreenshotDocument();
 	}

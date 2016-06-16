@@ -2,7 +2,7 @@ package main;
 
 import operations.Operations;
 import operations.TestData;
-import app_ui.TempMainWindow;
+import app_ui.MainWindow;
 
 
 public class TEST_MainClass implements Runnable
@@ -14,7 +14,7 @@ public class TEST_MainClass implements Runnable
 	
 	public static void main(String [] args)
 	{
-		int urlSelected = TempMainWindow.AUTSelection.getSelectedIndex();
+		int urlSelected = MainWindow.AUTSelection.getSelectedIndex();
 		
 		if (urlSelected == 0)
 		{

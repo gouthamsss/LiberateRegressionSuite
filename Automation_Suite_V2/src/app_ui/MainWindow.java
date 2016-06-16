@@ -25,9 +25,9 @@ import javax.swing.table.DefaultTableModel;
 import main.MainClass;
 import net.miginfocom.swing.MigLayout;
 
-public class TempMainWindow 
+public class MainWindow 
 {
-	public static String version = "2.0.0.3 : Provisioning Improvements";
+	public static String version = "2.0.0.4 : Updated to window name to MainWindow";
 	
 	private JFrame frmRegressionSuiteV;
 	
@@ -76,7 +76,7 @@ public class TempMainWindow
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					TempMainWindow window = new TempMainWindow();
+					MainWindow window = new MainWindow();
 					window.frmRegressionSuiteV.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -88,7 +88,7 @@ public class TempMainWindow
 	/**
 	 * Create the application.
 	 */
-	public TempMainWindow() 
+	public MainWindow() 
 	{
 		initialize();
 		
