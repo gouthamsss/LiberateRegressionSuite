@@ -1,5 +1,6 @@
 package app_ui;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -27,7 +28,7 @@ import net.miginfocom.swing.MigLayout;
 
 public class MainWindow 
 {
-	public static String version = "2.0.0.4 : Updated to window name to MainWindow";
+	public static String version = "2.0.0.5 : Log area operational";
 	
 	private JFrame frmRegressionSuiteV;
 	
@@ -65,10 +66,10 @@ public class MainWindow
 	public static JLabel VerifyCashdrawerStatus;
 	private JPanel panel;
 	private JButton btnNewButton;
-	private JScrollPane scrollPane;
+	private JScrollPane scrollPane_tcTable;
 	private JTable table;
-	private JScrollPane scrollPane_1;
-	private JTextArea textArea;
+	private JScrollPane scrollPane_UIlog;
+	private static JTextArea automationUILog;
 	/**
 	 * Launch the application.
 	 */
@@ -254,8 +255,8 @@ public class MainWindow
 		btnNewButton = new JButton("New button");
 		panel.add(btnNewButton, "cell 2 0");
 		
-		scrollPane = new JScrollPane();
-		panel.add(scrollPane, "cell 0 1 8 1,grow");
+		scrollPane_tcTable = new JScrollPane();
+		panel.add(scrollPane_tcTable, "cell 0 1 8 1,grow");
 		
 		table = new JTable();
 		table.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -297,13 +298,18 @@ public class MainWindow
 		table.getColumnModel().getColumn(0).setResizable(false);
 		table.getColumnModel().getColumn(0).setPreferredWidth(53);
 		table.getColumnModel().getColumn(1).setPreferredWidth(256);
-		scrollPane.setViewportView(table);
+		scrollPane_tcTable.setViewportView(table);
 		
-		scrollPane_1 = new JScrollPane();
-		panel.add(scrollPane_1, "cell 0 2 8 1,grow");
+		scrollPane_UIlog = new JScrollPane();
+		panel.add(scrollPane_UIlog, "cell 0 2 8 1,grow");
 		
-		textArea = new JTextArea();
-		scrollPane_1.setViewportView(textArea);
+		automationUILog = new JTextArea();
+		automationUILog.setForeground(Color.BLUE);
+		automationUILog.setEditable(false);
+		automationUILog.setSize(automationUILog.getSize());
+		scrollPane_UIlog.setViewportView(automationUILog);
+		
+		scrollPane_UIlog.setPreferredSize(automationUILog.getPreferredSize());
 		
 		JMenuBar menuBar = new JMenuBar();
 		frmRegressionSuiteV.setJMenuBar(menuBar);
@@ -332,5 +338,11 @@ public class MainWindow
 		JMenuItem mntmAbout = new JMenuItem("About");
 		mnHelp.add(mntmAbout);
 	}
-
+	
+	public static void writetoUIconsole(String message)
+	{
+		MainWindow.automationUILog.append(message);
+		MainWindow.automationUILog.revalidate();
+		automationUILog.setCaretPosition(automationUILog.getDocument().getLength());
+	}
 }

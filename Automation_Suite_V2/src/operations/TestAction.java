@@ -21,6 +21,8 @@ import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import app_ui.MainWindow;
+
 import com.gargoylesoftware.htmlunit.ElementNotFoundException;
 import com.google.common.base.Predicate;
 
@@ -573,5 +575,6 @@ public class TestAction
 		String msg = sdf.format(new Date()) + " : " + message + "\n";
 		System.out.print(msg);
 		TestReport.writelog(msg);
+		MainWindow.writetoUIconsole(msg);
 	}
 }
