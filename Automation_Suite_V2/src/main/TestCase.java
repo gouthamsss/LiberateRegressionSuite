@@ -375,12 +375,56 @@ public class TestCase
 		report.createScreenshotDocument();
 	}
 	
-	public static void MaintainQuery()
+	public static void MaintainQueryAccountNumber()
 	{
 		LoginLogout.login(MainClass.AUTURL);
-
-		TestReport report = new TestReport("MaintainQuery", ReportLocation);
+		
+		TestReport report = new TestReport("MaintainQueryAccountNumber", ReportLocation);
 		QueryManagement querymanagement = new QueryManagement(report);
+		
+		CustomerSearch customerSearch	= new CustomerSearch(report);
+		customerSearch.AccountNumber 	= "240004430000";
+		@SuppressWarnings("unused")
+		Boolean TestStatus = customerSearch.execute();
+		
+		querymanagement.execute();
+		
+		report.createScreenshotDocument();
+	}
+	
+	public static void MaintainQueryServiceOrder()
+	{
+		LoginLogout.login(MainClass.AUTURL);
+		
+		TestReport report = new TestReport("MaintainQueryServiceOrder", ReportLocation);
+		QueryManagement querymanagement = new QueryManagement(report);
+		
+		CustomerSearch customerSearch	= new CustomerSearch(report);
+		customerSearch.AccountNumber 	= "240004430000";
+		@SuppressWarnings("unused")
+		Boolean TestStatus = customerSearch.execute();
+		
+		querymanagement.RaiseforOrder = true;
+		querymanagement.execute();
+		
+		report.createScreenshotDocument();
+	}
+	
+	public static void MaintainQueryServiceNumber()
+	{
+		LoginLogout.login(MainClass.AUTURL);
+		
+		TestReport report = new TestReport("MaintainQueryServiceNumber", ReportLocation);
+		QueryManagement querymanagement = new QueryManagement(report);
+		
+		CustomerSearch customerSearch	= new CustomerSearch(report);
+		customerSearch.AccountNumber 	= "240004430000";
+		@SuppressWarnings("unused")
+		Boolean TestStatus = customerSearch.execute();
+		
+		querymanagement.RaiseforService = true;
+		//TODO provide service number
+		querymanagement.ServiceNumber	= "";
 		querymanagement.execute();
 		
 		report.createScreenshotDocument();
