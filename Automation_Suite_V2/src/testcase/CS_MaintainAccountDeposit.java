@@ -4,7 +4,7 @@ import operations.Operations;
 import operations.TestAction;
 import operations.TestReport;
 
-public class MaintainAccountDeposit
+public class CS_MaintainAccountDeposit
 {
 	public String DepositAmount = "100.00";
 	String ReasonForDeposit = "";
@@ -17,7 +17,7 @@ public class MaintainAccountDeposit
     boolean passed;
     String xpath;
     
-    public MaintainAccountDeposit(TestReport report)
+    public CS_MaintainAccountDeposit(TestReport report)
     {
     	this.report = report;
     }

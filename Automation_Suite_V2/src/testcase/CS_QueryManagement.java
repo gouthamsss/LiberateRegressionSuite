@@ -4,7 +4,7 @@ import operations.Operations;
 import operations.TestAction;
 import operations.TestReport;
 
-public class QueryManagement
+public class CS_QueryManagement
 {
 	TestAction ta = new TestAction(Operations.getdriver());
 	TestReport report;
@@ -18,7 +18,7 @@ public class QueryManagement
 	public String ServiceNumber;
 	public String ServiceOrder;
 	
-	public QueryManagement (TestReport report)
+	public CS_QueryManagement (TestReport report)
 	{
 		this.report = report;
 	}

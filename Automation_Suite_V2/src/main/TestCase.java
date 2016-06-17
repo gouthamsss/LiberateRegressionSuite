@@ -5,10 +5,10 @@ import operations.TestReport;
 import testcase.CreateNewAccount;
 import testcase.CustomerSearch;
 import testcase.LoginLogout;
-import testcase.MaintainAccountDeposit;
+import testcase.CS_MaintainAccountDeposit;
 import testcase.Payments;
 import testcase.ProvideService;
-import testcase.QueryManagement;
+import testcase.CS_QueryManagement;
 import testcase.Routing;
 import app_ui.MainWindow;
 
@@ -323,7 +323,7 @@ public class TestCase
 			return;
 		}
 		
-		MaintainAccountDeposit deposit = new MaintainAccountDeposit(report);
+		CS_MaintainAccountDeposit deposit = new CS_MaintainAccountDeposit(report);
 		deposit.operation = "Create";
 		TestStatus = deposit.execute();
 		if(TestStatus == false)
@@ -380,7 +380,7 @@ public class TestCase
 		LoginLogout.login(MainClass.AUTURL);
 		
 		TestReport report = new TestReport("MaintainQueryAccountNumber", ReportLocation);
-		QueryManagement querymanagement = new QueryManagement(report);
+		CS_QueryManagement querymanagement = new CS_QueryManagement(report);
 		
 		CustomerSearch customerSearch	= new CustomerSearch(report);
 		customerSearch.AccountNumber 	= "240004430000";
@@ -397,7 +397,7 @@ public class TestCase
 		LoginLogout.login(MainClass.AUTURL);
 		
 		TestReport report = new TestReport("MaintainQueryServiceOrder", ReportLocation);
-		QueryManagement querymanagement = new QueryManagement(report);
+		CS_QueryManagement querymanagement = new CS_QueryManagement(report);
 		
 		CustomerSearch customerSearch	= new CustomerSearch(report);
 		customerSearch.AccountNumber 	= "240004430000";
@@ -415,7 +415,7 @@ public class TestCase
 		LoginLogout.login(MainClass.AUTURL);
 		
 		TestReport report = new TestReport("MaintainQueryServiceNumber", ReportLocation);
-		QueryManagement querymanagement = new QueryManagement(report);
+		CS_QueryManagement querymanagement = new CS_QueryManagement(report);
 		
 		CustomerSearch customerSearch	= new CustomerSearch(report);
 		customerSearch.AccountNumber 	= "240004430000";
